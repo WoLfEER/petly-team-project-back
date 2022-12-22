@@ -6,7 +6,7 @@ const validateBody = schema => {
       next(error);
     }
     next();
-  };
+  };  
 
   return fn;
 };

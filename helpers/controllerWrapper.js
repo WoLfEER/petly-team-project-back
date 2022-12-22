@@ -1,4 +1,4 @@
-const controlWrapper = async control => {
+const controllerWrapper = control => {
   const fn = async (req, res, next) => {
     try {
       await control(req, res, next);
@@ -9,4 +9,5 @@ const controlWrapper = async control => {
   return fn;
 };
 
-module.exports = controlWrapper;
+module.exports = controllerWrapper
+;
