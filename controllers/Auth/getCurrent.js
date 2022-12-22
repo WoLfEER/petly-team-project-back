@@ -1,21 +1,10 @@
-const getCurrent = async(req, res)=>{
-    const {
-        email, 
-        password: hashPassword, 
-        avatarUrl, 
-        name,
-        city,
-        phone,
-    } = req.user;
+const User = require("../../models/user");
 
-    res.json({
-        email, 
-    password: hashPassword, 
-    avatarUrl, 
-    name,
-    city,
-    phone,
-    })
-}
+const getCurrent = async (req, res) => {
+  const { id: owner } = req.user;
+
+  const result = await User.findById(owner);
+  res.json(result);
+};
 
 module.exports = getCurrent;
