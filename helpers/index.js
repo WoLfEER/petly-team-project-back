@@ -1,9 +1,9 @@
 const controllerWrapper = require("./controllerWrapper");
 const handleSaveErrors = require("./handleSaveErrors");
-const HTTPError = require('./HTTPErrors');
+const HttpError = require('./HttpError');
 
 module.exports = {
   controllerWrapper,
   handleSaveErrors,
-  HTTPError,
+  HttpError,
 };

@@ -6,7 +6,7 @@ const registerSchema = Joi.object({
   name: Joi.string().required(),
   city: Joi.string()
     .required()
-    .pattern(/[A-Z][a-z]+, [A-Z][a-z]*/),
+    .pattern(/[A-Z][a-z]*/),
   phone: Joi.string()
     .required()
     .pattern(/^\+380\d{9}$/, "numbers"),

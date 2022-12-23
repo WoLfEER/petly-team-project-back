@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const User = require("../../models/user")
 const {HttpError} = require("../../helpers")
 const bcrypt =require("bcryptjs")
 const gravatar = require("gravatar")
-const {SECRET_KEY} = process.env
+// const {SECRET_KEY} = process.env
 
 
 const register = async(req, res) => {
@@ -27,12 +27,12 @@ const newUser = await User.create({
     phone,
   });
 
-    const payload = {
-        id: newUser._id,
-      };
+    // const payload = {
+    //     id: newUser._id,
+    //   };
     
-      const token = jwt.sign(payload, SECRET_KEY);
-      await User.findByIdAndUpdate(newUser._id, { token })
+    //   const token = jwt.sign(payload, SECRET_KEY);
+    //   await User.findByIdAndUpdate(newUser._id, { token })
 
 res.status(201).json({
     user: {
@@ -40,7 +40,7 @@ res.status(201).json({
         email: newUser.email,
         name: newUser.name,
       },
-      token,
+      // token,
 })
 }
 
