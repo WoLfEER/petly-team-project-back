@@ -1,5 +1,5 @@
-const getAll = async (req, res, next) => {
-  await res.json(201);
+const getAll =  (req, res, next) => {
+   res.json(201);
 };
 
 module.exports = getAll;
