@@ -33,7 +33,6 @@ const newUser = await User.create({
     
     //   const token = jwt.sign(payload, SECRET_KEY);
     //   await User.findByIdAndUpdate(newUser._id, { token })
-
 res.status(201).json({
     user: {
         id: newUser._id,
