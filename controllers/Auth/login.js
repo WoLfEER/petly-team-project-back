@@ -10,6 +10,8 @@ const user = await User.findOne({email});
 if(!user){
     throw HttpError( 401, " Email or password invalid")
 }
+
+console.log(1);
 // if(!user.verify){
 //     throw HttpError(401, "Email not verify")
 // }
