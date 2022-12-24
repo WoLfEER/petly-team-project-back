@@ -1,5 +1,9 @@
-const testController = (req, res, next) => {
-  res.json(201);
+const Notice = require("../models/notice");
+
+const testController = async (req, res, next) => {
+  const result = await Notice.find({});
+
+  res.json(result);
 };
 
 module.exports = testController;
