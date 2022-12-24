@@ -4,8 +4,9 @@ const User = require("../../models/user");
 const {HttpError} = require("../../helpers")
 
 const addUserPet = async (req, res) => {
-  const { id: owner } = req.user;
-
+  
+  const { _id: owner } = req.user;
+  
   let userPetImage = null;
 
   if (!owner) {
@@ -14,7 +15,7 @@ const addUserPet = async (req, res) => {
   
   if (req.file) {
     const file = req.file.buffer;
-    const result1 = await uploadImage(file, "pets");
+    const result1 = await uploadImage(file, "myPets");
     userPetImage = result1.secure_url;
   } else {
     userPetImage = owner.petURL;
@@ -28,7 +29,7 @@ const addUserPet = async (req, res) => {
 
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: { myPets: userNotice } },
+    { $set: { myPets: userNotice } },
     {
       new: true,
     }
@@ -39,6 +40,8 @@ const addUserPet = async (req, res) => {
   }
 
   res.json(userNotice);
+  // res.status(201).json(result)
+  
 };
 
 module.exports = addUserPet;

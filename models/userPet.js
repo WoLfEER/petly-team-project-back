@@ -19,8 +19,9 @@ const userPetSchema = new Schema({
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "user",
-  },
+    required: true,
+    ref: 'User'
+  }
 });
 
 userPetSchema.post("save", handleSaveErrors);
