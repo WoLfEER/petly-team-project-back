@@ -1,47 +1,40 @@
-const uploadImage = require("../../helpers/cloudinary");
 const { UserPet } = require("../../models/userPet");
 const User = require("../../models/user");
-const {HttpError} = require("../../helpers")
+const { HttpError, uploadImage } = require("../../helpers");
+const fs = require("fs").promises;
 
 const addUserPet = async (req, res) => {
-  
   const { _id: owner } = req.user;
-  
-  let userPetImage = null;
+  const { path: tempDir } = req.file;
+
+  const avatar = await uploadImage(tempDir);
 
   if (!owner) {
     throw HttpError(404, "Not found");
   }
-  
-  if (req.file) {
-    const file = req.file.buffer;
-    const result1 = await uploadImage(file, "myPets");
-    userPetImage = result1.secure_url;
-  } else {
-    userPetImage = owner.petURL;
-  }
 
   const userNotice = await UserPet.create({
     ...req.body,
-    petURL: userPetImage,
+    avatarURL: avatar.secure_url,
+    cloudId: avatar.public_id,
     owner,
   });
 
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $set: { myPets: userNotice } },
+    { $push: { myPets: userNotice } },
     {
       new: true,
     }
   );
+
+  fs.unlink(tempDir);
 
   if (!result) {
     throw HttpError(404, "Not found");
   }
 
   res.json(userNotice);
-  // res.status(201).json(result)
-  
 };
 
 module.exports = addUserPet;

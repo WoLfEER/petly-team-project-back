@@ -1,33 +1,32 @@
-const cloudinary = require('cloudinary').v2
-const streamifier = require("streamifier");
-const { Promise } = require("mongoose");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
-  clooud_name: process.env.CLOUD_NAME,
+  cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
-  api_secret: process.env.API_KEY_SECRET,
+  api_secret: process.env.API_SECRET,
 });
 
-const uploadImage = (buffer, path) => {
-    return new Promise((resolve, reject) => {
-      const cldUuploadSstream = cloudinary.uploader.upload_stream(
-        {
-          width: 328,
-          height: 328,
-          format: "jpeg",
-          folder: path,
-        },
-        (error, result) => {
-          if (result) {
-            resolve(result);
-          } else {
-            reject(error);
-          }
-        }
-      );
-  
-      streamifier.createReadStream(buffer).pipe(cldUuploadSstream);
-    });
+const uploadImage = async imagePath => {
+  const options = {
+    use_filename: false,
+    unique_filename: true,
+    overwrite: true,
+    folder: "avatars",
+    transformation: [{ width: 350, height: 350, crop: "fill", gravity: "face" }],
   };
-  
-  module.exports = uploadImage;
+
+  try {
+    const result = await cloudinary.uploader.upload(imagePath, options);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = uploadImage;
+
+
+
+
+
+

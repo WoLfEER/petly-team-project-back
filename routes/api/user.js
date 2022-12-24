@@ -8,9 +8,10 @@ const schemas = require("../../schemas");
 
 
 
+
 router.get("/pets", authenticate, controllerWrapper(ctrl.getUserPets));
-router.post("/pets", authenticate, upload.single("petURL"), validateBody(schemas.UserPetSchema), controllerWrapper(ctrl.addUserPet));
-router.patch("/update", authenticate, upload.single("avatarURL"), validateBody(schemas.updateUserSchema), controllerWrapper(ctrl.updateUser));
+router.post("/pets", authenticate, upload.single("avatar"), controllerWrapper(ctrl.addUserPet));
+router.patch("/update", authenticate, upload.single("avatar"), validateBody(schemas.updateUserSchema), controllerWrapper(ctrl.updateUser));
 // router.delete("/pets/:noticeId", authenticate, isValidId, controllerWrapper(ctrl.removeUserPet));
 
 module.exports = router;
