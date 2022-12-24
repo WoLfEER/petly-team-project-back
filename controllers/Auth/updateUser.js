@@ -1,7 +1,7 @@
 const uploadImage = require("../../helpers/cloudinary");
 
 const User = require("../../models/user");
-const { RequestError } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 
 const updateUser = async (req, res) => {
   const { _id } = req.user;
@@ -9,7 +9,7 @@ const updateUser = async (req, res) => {
   let avatar = null;
 
   if (!_id) {
-    throw RequestError(404, "Not found");
+    throw HttpError(404, "Not found");
   }
 
   if (req.file) {
@@ -36,7 +36,7 @@ const updateUser = async (req, res) => {
   );
 
   if (!result) {
-    throw RequestError(404, "Not found");
+    throw HttpError(404, "Not found");
   }
   res.json(result);
 };

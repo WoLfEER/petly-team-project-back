@@ -11,4 +11,5 @@ router.post("/login", validateBody(loginSchema), controllerWrapper(ctrl.login))
 router.get("/logout", authenticate, controllerWrapper(ctrl.logout))
 router.patch("/update", authenticate, upload.single("avatarURL"), validateBody(updateUserSchema), controllerWrapper(ctrl.updateUser));
 
+
 module.exports = router;

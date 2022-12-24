@@ -1,5 +1,4 @@
 const uploadImage = require("../../helpers/cloudinary");
-
 const { UserPet } = require("../../models/userPet");
 const User = require("../../models/user");
 const {HttpError} = require("../../helpers")
@@ -12,7 +11,7 @@ const addUserPet = async (req, res) => {
   if (!owner) {
     throw HttpError(404, "Not found");
   }
-
+  
   if (req.file) {
     const file = req.file.buffer;
     const result1 = await uploadImage(file, "pets");
