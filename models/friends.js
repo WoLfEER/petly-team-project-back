@@ -28,7 +28,7 @@ const friendsSchema = new Schema(
       required: true,
     },
     workDays: {
-      type: String,
+      type: Array,
       required: true,
     },
     phone: {
