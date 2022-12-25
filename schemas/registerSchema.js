@@ -5,11 +5,11 @@ const registerSchema = Joi.object({
   email: Joi.string().email().required(),
   name: Joi.string().required(),
   city: Joi.string()
-    // .required()
+    .required()
     .pattern(/[A-Z][a-z]*/),
   phone: Joi.string()
-    // .required()
-    .pattern(/^\+380\d{9}$/, "numbers"),
+    .required()
+    // .pattern(/^\+380\d{9}$/, "numbers"),
 });
 
 module.exports = registerSchema;
