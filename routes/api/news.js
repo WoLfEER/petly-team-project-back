@@ -1,9 +1,10 @@
 const express = require("express");
-const getAll = require("../../controllers/getAll");
+const getNews = require("../../controllers/news/news");
 const { controllerWrapper } = require("../../helpers");
+const { authenticate } = require("../../middlewares");
 
 const router = express.Router();
 
-router.get("/", controllerWrapper(getAll));
+router.get("/", authenticate, controllerWrapper(getNews));
 
 module.exports = router;

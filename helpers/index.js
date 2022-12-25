@@ -1,9 +1,11 @@
 const controllerWrapper = require("./controllerWrapper");
 const handleSaveErrors = require("./handleSaveErrors");
-const HTTPError = require('./HTTPErrors');
+const HttpError = require('./HttpError')
+const uploadImage = require('./cloudinary');
 
 module.exports = {
   controllerWrapper,
   handleSaveErrors,
-  HTTPError,
+  HttpError,
+  uploadImage,
 };
