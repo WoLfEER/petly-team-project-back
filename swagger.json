@@ -1,0 +1,776 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Petly API docs",
+    "description": "API documentation for team goit-group-BC25 project 'Petly'.",
+    "version": "1.0.1"
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json", "multipart/form-data"],
+  "servers": [
+    {
+      "url": "https://petly-back.onrender.com/api",
+      "description": "Deployment server"
+    },
+    {
+      "url": "https://localhost:3001/api",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Autorization and information about user"
+    },
+    {
+      "name": "Services-sidebar",
+      "description": "Access to contact information about services that provide services"
+    },
+    {
+      "name": "News",
+      "description": "Access to receive news"
+    },
+    {
+      "name": "Notices",
+      "description": "Information about the notification"
+    },
+    {
+      "name": "User",
+      "description": "Information about the user"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Create a new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "String",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "String",
+                    "format": "email",
+                    "example": "unknown@gmail.com"
+                  },
+                  "password": {
+                    "type": "String",
+                    "format": "password",
+                    "example": "somepassword"
+                  },
+                  "repeat_password": {
+                    "type": "String",
+                    "format": "password",
+                    "example": "somepassword"
+                  },
+                  "city": {
+                    "type": "String",
+                    "example": "Kyiv"
+                  },
+                  "phone": {
+                    "type": "String",
+                    "example": "+380983455545"
+                  },
+                  "birthday": {
+                    "type": "String",
+                    "example": "2022-07-19"
+                  },
+                  "avatarURL": {
+                    "type": "String",
+                    "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Registration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User creation error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "description": "Login user",
+        "requestBody": {
+          "description": "Create new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User is logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "String",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "String",
+                      "example": "unknown@gmail.com"
+                    },
+                    "token": {
+                      "type": "String",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid email or password"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout user",
+        "description": "Logout user by token in headers Autorization",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "The token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "The user is logged out"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/friends": {
+      "get": {
+        "tags": ["Services-sidebar"],
+        "summary": "Get contact information about services that provide services",
+        "description": "Get contact information about services that provide services",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Friends"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Invalid user / Invalid session"
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get news",
+        "description": "Get news",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/News"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided"
+          },
+          "401": {
+            "description": "Unauthorized (invalid token)"
+          },
+          "404": {
+            "description": "Invalid user / Invalid session"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get current user",
+        "description": "Get current user",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not autorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update contact information about the user",
+        "description": "Update contact information about the user by token in headers Autorization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "User's id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Update contact information about the user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "String",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "String",
+                    "format": "email",
+                    "example": "unknown@gmail.com"
+                  },
+                  "password": {
+                    "type": "String",
+                    "format": "password",
+                    "example": "somepassword"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": true,
+        "responses": {
+          "200": {
+            "description": "User's contact information succesfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not autorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/pet": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create pet",
+        "description": "Create pet",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Create pet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "String",
+                    "example": "Tom"
+                  },
+                  "birthday": {
+                    "type": "String",
+                    "example": "2022-07-19"
+                  },
+                  "date": {
+                    "type": "String",
+                    "example": "2022-07-19"
+                  },
+                  "breed": {
+                    "type": "String",
+                    "example": "Dog"
+                  },
+                  "comments": {
+                    "type": "String",
+                    "example": "Look at those paws! They will be so big when they're full grown!"
+                  },
+                  "avatarURL": {
+                    "type": "String",
+                    "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+                  },
+                  "owner": {
+                    "type": "String",
+                    "id": ""
+                  },
+                  "cloudId": {
+                    "type": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": true,
+        "responses": {
+          "200": {
+            "description": "User's pet succesfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPet"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not autorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+
+    "/user/pet/{petId}": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Deleted pet by id",
+        "description": "Deleted pet by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "petId",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "Pet's id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "User's pet succesfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "String",
+                      "example": "successfully"
+                    },
+                    "code": { "type": "String", "example": "200" },
+                    "message": { "type": "String", "example": "Pet deleted" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not autorized"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Registration": {
+        "type": "object",
+        "required": ["name", "email", "password", "city", "phone"],
+        "properties": {
+          "_id": {
+            "type": "String",
+            "example": "639f369e575daaa9bd425ee8"
+          },
+          "name": {
+            "type": "String",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "String",
+            "example": "unknown@gmail.com"
+          },
+          "city": {
+            "type": "String",
+            "example": "Kyiv"
+          },
+          "phone": {
+            "type": "String",
+            "example": "+380983455545"
+          },
+          "birthday": {
+            "type": "String",
+            "example": "2022-07-19"
+          },
+          "avatarURL": {
+            "type": "String",
+            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          },
+          "token": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "String",
+            "format": "email",
+            "example": "unknown@gmail.com"
+          },
+          "password": {
+            "type": "String",
+            "format": "password",
+            "example": "somepassword"
+          }
+        }
+      },
+      "Friends": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "String",
+              "example": "Притулок для бездомних тварин 'Сіріус"
+            },
+            "url": {
+              "type": "String",
+              "example": "https://dogcat.com.ua"
+            },
+            "addressUrl": {
+              "type": "String",
+              "example": "https://goo.gl/maps/iq8NXEUf31EAQCzc6"
+            },
+            "imageUrl": {
+              "type": "String",
+              "example": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_287.png"
+            },
+            "address": {
+              "type": "String",
+              "example": "Fedorivka, Kyiv Oblast, Ukraine, 07372"
+            },
+            "workDays": {
+              "type": "array",
+              "example": [
+                { "isOpen": false },
+                { "isOpen": false },
+                { "isOpen": false },
+                { "isOpen": false },
+                { "isOpen": false },
+                { "isOpen": true, "from": "11:00", "to": "16:00" },
+                { "isOpen": true, "from": "11:00", "to": "16:00" }
+              ]
+            },
+            "phone": {
+              "type": "String",
+              "example": "+380931934069"
+            },
+            "email": {
+              "type": "String",
+              "example": null
+            },
+            "createdAt": {
+              "type": "String",
+              "example": "2022-12-18T15:49:50.351+00:00"
+            },
+            "updatedAt": {
+              "type": "String",
+              "example": "2022-12-18T15:49:50.351+00:00"
+            }
+          }
+        },
+        "example": [
+          {
+            "title": "Притулок для бездомних тварин 'Сіріус",
+            "url": "https://dogcat.com.ua",
+            "addressUrl": "https://goo.gl/maps/iq8NXEUf31EAQCzc6",
+            "imageUrl": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_287.png",
+            "address": "Fedorivka, Kyiv Oblast, Ukraine, 07372",
+            "workDays": [
+              { "isOpen": false },
+              { "isOpen": false },
+              { "isOpen": false },
+              { "isOpen": false },
+              { "isOpen": false },
+              { "isOpen": true, "from": "11:00", "to": "16:00" },
+              { "isOpen": true, "from": "11:00", "to": "16:00" }
+            ],
+            "phone": "+380931934069",
+            "email": null
+          },
+          {
+            "title": "Happy Paw",
+            "url": "https://happypaw.ua/ua",
+            "addressUrl": "https://goo.gl/maps/3RyzTYBvMr9WQWCC6",
+            "imageUrl": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_288.png",
+            "address": "Київ, вулиця Шота Руставелі, 44 (3-й поверх, офіс 7)",
+            "workDays": [
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" },
+              { "isOpen": true, "from": "09:00", "to": "17:00" }
+            ],
+            "phone": "+380442900329",
+            "email": "hello@happypaw.ua"
+          }
+        ]
+      },
+      "News": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "String",
+              "example": "В День ветеринара в столиці пройде безкоштовний тренінг з надання першої допомоги тваринам"
+            },
+            "url": {
+              "type": "String",
+              "example": "https://www.kmlvm.com.ua/v-den-veterynara-v-stolytsi-projde-bezkoshtovnyj-trening-z-nadannya-pershoyi-dopomogy-tvarynam/"
+            },
+            "description": {
+              "type": "String",
+              "example": "В неділю, 14 серпня, в Тимчасовому притулку для тварин «ВДНГ» пройде тренінг на тему «Надання першої допомоги тваринам». Захід проводиться комунальним підприємством «Київська міська лікарня ветеринарної медицини», фахівці якого навчать всіх бажаючих навичкам надання першої допомоги братам нашим меншим, які потрапили в біду. Без перебільшення, подібні знання можуть врятувати життя чотирилапим. Тренінг безкоштовний, взяти в ньому участь може будь-хто, дозволяється участь зі своїм домашнім улюбленцем. Після тренінгу учасники зможуть отримати безкоштовну консультацію ветеринара, щодо догляду за тваринами, вакцинації та будь-яких інших питань, пов'язаними зі здоров'ям улюбленця. Дата проведення майстер-класу обрана не випадково. 14 серпня в Україні відзначається День працівників ветеринарної медицини і цього року ми вирішили провести такий потрібний тренінг. Для ветеринара головне – це врятовані брати наші менші, а навчити людей надавати первинну допомогу тваринам значить «інвестувати» у врятовані життя тварин в майбутньому. Початок тренінгу об 11:00. Адреса Тимчасового притулку для тварин «ВДНГ»: вулиця Академіка Глушкова, 1, 16 павільйон."
+            },
+            "date": {
+              "type": "String",
+              "example": "2022-08-12"
+            }
+          }
+        },
+        "example": [
+          {
+            "title": "В День ветеринара в столиці пройде безкоштовний тренінг з надання першої допомоги тваринам",
+            "url": "https://www.kmlvm.com.ua/v-den-veterynara-v-stolytsi-projde-bezkoshtovnyj-trening-z-nadannya-pershoyi-dopomogy-tvarynam/",
+            "description": "В неділю, 14 серпня, в Тимчасовому притулку для тварин «ВДНГ» пройде тренінг на тему «Надання першої допомоги тваринам». Захід проводиться комунальним підприємством «Київська міська лікарня ветеринарної медицини», фахівці якого навчать всіх бажаючих навичкам надання першої допомоги братам нашим меншим, які потрапили в біду. Без перебільшення, подібні знання можуть врятувати життя чотирилапим. Тренінг безкоштовний, взяти в ньому участь може будь-хто, дозволяється участь зі своїм домашнім улюбленцем. Після тренінгу учасники зможуть отримати безкоштовну консультацію ветеринара, щодо догляду за тваринами, вакцинації та будь-яких інших питань, пов'язаними зі здоров'ям улюбленця. Дата проведення майстер-класу обрана не випадково. 14 серпня в Україні відзначається День працівників ветеринарної медицини і цього року ми вирішили провести такий потрібний тренінг. Для ветеринара головне – це врятовані брати наші менші, а навчити людей надавати первинну допомогу тваринам значить «інвестувати» у врятовані життя тварин в майбутньому. Початок тренінгу об 11:00. Адреса Тимчасового притулку для тварин «ВДНГ»: вулиця Академіка Глушкова, 1, 16 павільйон.",
+            "date": "2022-08-12"
+          },
+          {
+            "title": "У Телеграмі запрацював чат-бот, що надає безкоштовні консультації щодо догляду за тваринами",
+            "url": "https://www.kmlvm.com.ua/u-telegrami-zapratsyuvav-chat-bot-shho-nadaye-bezkoshtovni-konsultatsiyi-shhodo-doglyadu-za-tvarynamy/",
+            "description": "У столиці запрацював спеціальний Telegram-бот «Твій вет Київ», який надає безкоштовні ветеринарні консультації щодо догляду та лікування тварин. Знайти бот можна за посиланням https://t.me/VetHelpKyiv_bot. Функціонал бота вже досить широкий, господарі тварин зможуть отримати відповіді на питання щодо вакцинації тварин, їх стерилізацію, дізнатись адреси муніципальних ветеринарних клінік, де можна отримати всі необхідні послуги. Крім того, користувачі боту зможуть отримати консультацію від ветеринарного лікаря, описавши проблему. Ця функція буде доступна з 9:00 до 18:00, однак цілодобово можна буде отримати основну довідкову інформацію з таких питань, як перша допомога при отруєнні тварини, укусу кліща, дізнатись графік профілактичних щеплень, тощо. Наразі бот працює в тестовому режимі, однак в майбутньому його функціонал буде розширюватись.",
+            "date": "2022-07-19"
+          }
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "String",
+            "example": "somepassword"
+          },
+          "email": {
+            "type": "String",
+            "example": "unknown@gmail.com"
+          },
+          "name": {
+            "type": "String",
+            "example": "John Doe"
+          },
+          "city": {
+            "type": "String",
+            "example": "Kyiv"
+          },
+          "phone": {
+            "type": "String",
+            "example": "+380983455545"
+          },
+          "birthday": {
+            "type": "String",
+            "example": "2022-07-19"
+          },
+          "avatarURL": {
+            "type": "String",
+            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          },
+          "favorites": {
+            "type": "String",
+            "example": "6867d7469076bdce33bc75fee20918eb"
+          },
+          "myPets": {
+            "type": "String",
+            "example": "6867d7469076bdce33bc75fee20918eb"
+          },
+          "token": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+          },
+          "createdAt": {
+            "type": "String",
+            "example": "2022-12-18T15:49:50.351+00:00"
+          },
+          "updatedAt": {
+            "type": "String",
+            "example": "2022-12-18T15:49:50.351+00:00"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "String",
+            "example": "unknown@gmail.com"
+          },
+          "name": {
+            "type": "String",
+            "example": "John Doe"
+          },
+          "city": {
+            "type": "String",
+            "example": "Kyiv"
+          },
+          "phone": {
+            "type": "String",
+            "example": "+380983455545"
+          },
+          "birthday": {
+            "type": "String",
+            "example": "2022-07-19"
+          },
+          "avatarURL": {
+            "type": "String",
+            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          }
+        }
+      },
+      "UserPet": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "String",
+            "example": "Tom"
+          },
+          "birthday": {
+            "type": "String",
+            "example": "2022-07-19"
+          },
+          "date": {
+            "type": "String",
+            "example": "2022-07-19"
+          },
+          "breed": {
+            "type": "String",
+            "example": "Dog"
+          },
+          "comments": {
+            "type": "String",
+            "example": "Look at those paws! They will be so big when they're full grown!"
+          },
+          "avatarURL": {
+            "type": "String",
+            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          },
+          "owner": {
+            "type": "String",
+            "id": ""
+          },
+          "cloudId": {
+            "type": "String"
+          }
+        }
+      },
+
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
+}

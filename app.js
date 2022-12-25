@@ -1,8 +1,13 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+
+require("dotenv").config();
+
+
 const dotenv = require("dotenv");
 dotenv.config();
+
 
 //   routes
 const newsRouter = require("./routes/api/news");
@@ -26,9 +31,12 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/news", newsRouter);
+
+
 app.use("/api/friends", friendsRouter);
 app.use("/api/notices", noticeRouter);
 app.use("/api/user", userRouter);
+
 
 
 app.use((req, res) => {
