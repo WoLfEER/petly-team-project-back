@@ -7,7 +7,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: 8,
+      minlength: 1,
     },
     email: {
       type: String,
@@ -21,11 +21,11 @@ const userSchema = new Schema(
     },
     city: {
       type: String,
-      required: true,
+      // required: true,
     },
     phone: {
       type: String,
-      required: true,
+      // required: true,
       unique: true,
     },
     birthday: {
