@@ -10,11 +10,11 @@ const noticeSchema = new Schema(
     category: {
       type: String,
       enum: categories,
-      required: [true, "Set name of category for notice"],
+      // required: [true, "Set name of category for notice"], 
     },
     title: {
       type: String,
-      required: [true, "Set title for notice"],
+      // required: [true, "Set title for notice"],
     },
     breed: {
       type: String,

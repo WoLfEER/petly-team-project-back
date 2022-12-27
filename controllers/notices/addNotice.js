@@ -4,31 +4,46 @@ const { HttpError, uploadImage } = require("../../helpers");
 const fs = require("fs").promises;
 
 const addNotice = async (req, res) => {
-  try {
-    const { _id: owner } = req.user;
+  const { _id: owner } = req.user;
+  const avatarInfo = {
+    avatarURL:
+      "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg",
+    cloudId: "avatars/pqys0k4rpbrlkrliywpw",
+  };
+  if (req.file) {
     const { path: tempDir } = req.file;
 
     const avatar = await uploadImage(tempDir);
-    if (!owner) {
-      throw HttpError(404, "Not found");
-    }
 
-    const userNotice = await Notice.create({
-      ...req.body,
-      avatarURL: avatar.secure_url,
-      cloudId: avatar.public_id,
-      owner,
-    });
-
-    await User.findByIdAndUpdate(
-      owner,
-      { $push: { notices: userNotice._id } },
-      { new: true }
-    );
-    res.status(201).json(userNotice);
-  } catch (error) {
-    console.log(error);
+    avatarInfo.avatarURL = avatar.secure_url;
+    avatarInfo.cloudId = avatar.public_id;
+    fs.unlink(tempDir);
   }
+
+  if (!owner) {
+    throw HttpError(404, "Not found");
+  }
+
+  const userNotice = await Notice.create({
+    ...req.body,
+    ...avatarInfo,
+    owner,
+  });
+
+  const result = await User.findByIdAndUpdate(
+    { _id: owner },
+    { $push: { notices: userNotice } },
+    {
+      new: true,
+    }
+  );
+
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(userNotice);
 };
+
+module.exports = Notice;
 
 module.exports = addNotice;
