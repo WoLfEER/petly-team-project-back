@@ -228,7 +228,7 @@
         }
       }
     },
-    "/user": {
+    "/user/userinfo": {
       "get": {
         "tags": ["User"],
         "summary": "Get current user",
@@ -245,8 +245,8 @@
               }
             }
           },
-          "401": {
-            "description": "Not autorized"
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Server error"
@@ -254,27 +254,16 @@
         }
       }
     },
-    "/user/{userId}": {
+    "/user/update": {
       "patch": {
         "tags": ["User"],
         "summary": "Update contact information about the user",
         "description": "Update contact information about the user by token in headers Autorization",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "schema": {
-              "type": "String"
-            },
-            "required": true,
-            "description": "User's id"
-          }
-        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Update contact information about the user",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -287,10 +276,21 @@
                     "format": "email",
                     "example": "unknown@gmail.com"
                   },
-                  "password": {
+                  "city": {
                     "type": "String",
-                    "format": "password",
-                    "example": "somepassword"
+                    "example": "Kyiv"
+                  },
+                  "phone": {
+                    "type": "String",
+                    "example": "+380983455545"
+                  },
+                  "birthday": {
+                    "type": "String",
+                    "example": "2022-07-19"
+                  },
+                  "avatarURL": {
+                    "type": "String",
+                    "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
                   }
                 }
               }
@@ -302,15 +302,18 @@
           "200": {
             "description": "User's contact information succesfully updated",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateUser"
                 }
               }
             }
           },
-          "401": {
-            "description": "Not autorized"
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Email in use"
           },
           "500": {
             "description": "Server error"
@@ -318,7 +321,7 @@
         }
       }
     },
-    "/user/pet": {
+    "/user/pets": {
       "post": {
         "tags": ["User"],
         "summary": "Create pet",
@@ -327,19 +330,16 @@
         "requestBody": {
           "description": "Create pet",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
+                "required": ["name", "breed"],
                 "properties": {
                   "name": {
                     "type": "String",
                     "example": "Tom"
                   },
                   "birthday": {
-                    "type": "String",
-                    "example": "2022-07-19"
-                  },
-                  "date": {
                     "type": "String",
                     "example": "2022-07-19"
                   },
@@ -354,13 +354,6 @@
                   "avatarURL": {
                     "type": "String",
                     "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
-                  },
-                  "owner": {
-                    "type": "String",
-                    "id": ""
-                  },
-                  "cloudId": {
-                    "type": "String"
                   }
                 }
               }
@@ -372,15 +365,15 @@
           "200": {
             "description": "User's pet succesfully added",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "$ref": "#/components/schemas/UserPet"
                 }
               }
             }
           },
-          "401": {
-            "description": "Not autorized"
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Server error"
@@ -389,7 +382,7 @@
       }
     },
 
-    "/user/pet/{petId}": {
+    "/user/pets/{petId}": {
       "delete": {
         "tags": ["User"],
         "summary": "Deleted pet by id",
@@ -408,7 +401,7 @@
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
-            "description": "User's pet succesfully deleted",
+            "description": "User's pet deleted",
             "content": {
               "application/json": {
                 "schema": {
@@ -419,14 +412,17 @@
                       "example": "successfully"
                     },
                     "code": { "type": "String", "example": "200" },
-                    "message": { "type": "String", "example": "Pet deleted" }
+                    "message": {
+                      "type": "String",
+                      "example": "User's pet deleted"
+                    }
                   }
                 }
               }
             }
           },
-          "401": {
-            "description": "Not autorized"
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Server error"
@@ -626,9 +622,9 @@
       "User": {
         "type": "object",
         "properties": {
-          "password": {
+          "_id": {
             "type": "String",
-            "example": "somepassword"
+            "example": "63ab17b6cdc8b742046a5b5e"
           },
           "email": {
             "type": "String",
@@ -640,45 +636,98 @@
           },
           "city": {
             "type": "String",
-            "example": "Kyiv"
+            "example": "Kyiv, Obolon"
           },
           "phone": {
             "type": "String",
             "example": "+380983455545"
           },
-          "birthday": {
-            "type": "String",
-            "example": "2022-07-19"
-          },
           "avatarURL": {
             "type": "String",
             "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
           },
-          "favorites": {
-            "type": "String",
-            "example": "6867d7469076bdce33bc75fee20918eb"
-          },
+
           "myPets": {
-            "type": "String",
-            "example": "6867d7469076bdce33bc75fee20918eb"
-          },
-          "token": {
-            "type": "String",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+            "type": "Array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "String",
+                  "example": "63ab17e4cdc8b742046a5b62"
+                },
+                "name": {
+                  "type": "String",
+                  "example": "Tom"
+                },
+                "birthday": {
+                  "type": "String",
+                  "example": "2022-07-19"
+                },
+                "breed": {
+                  "type": "String",
+                  "example": "Dog"
+                },
+                "comments": {
+                  "type": "String",
+                  "example": "Good pet"
+                },
+                "avatarURL": {
+                  "type": "String",
+                  "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg"
+                },
+                "owner": {
+                  "type": "String",
+                  "example": "63ab17b6cdc8b742046a5b5e"
+                },
+                "cloudId": {
+                  "type": "String",
+                  "example": "avatars/pqys0k4rpbrlkrliywpw"
+                },
+                "__v": { "type": "Number", "example": 0 }
+              }
+            }
           },
           "createdAt": {
             "type": "String",
-            "example": "2022-12-18T15:49:50.351+00:00"
+            "example": "2022-12-27T16:05:10.175Z"
           },
           "updatedAt": {
             "type": "String",
-            "example": "2022-12-18T15:49:50.351+00:00"
+            "example": "2022-12-27T16:05:56.198Z"
           }
+        },
+        "example": {
+          "_id": "63ab17b6cdc8b742046a5b5e",
+          "email": "alex@gmail.com",
+          "name": "Alex",
+          "city": "Kyiv, Obolon",
+          "phone": "0911111111",
+          "avatarUrl": "//www.gravatar.com/avatar/0312d0d39585741666c19c217ed769f7",
+          "myPets": [
+            {
+              "_id": "63ab17e4cdc8b742046a5b62",
+              "name": "Cat",
+              "birthday": null,
+              "breed": "Good",
+              "comments": null,
+              "avatarURL": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg",
+              "owner": "63ab17b6cdc8b742046a5b5e",
+              "cloudId": "avatars/pqys0k4rpbrlkrliywpw",
+              "__v": 0
+            }
+          ],
+          "createdAt": "2022-12-27T16:05:10.175Z",
+          "updatedAt": "2022-12-27T16:05:56.198Z"
         }
       },
       "UpdateUser": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "String",
+            "example": "63ab17b6cdc8b742046a5b5e"
+          },
           "email": {
             "type": "String",
             "example": "unknown@gmail.com"
@@ -689,34 +738,53 @@
           },
           "city": {
             "type": "String",
-            "example": "Kyiv"
+            "example": "Kyiv, Obolon"
           },
           "phone": {
             "type": "String",
             "example": "+380983455545"
           },
-          "birthday": {
-            "type": "String",
-            "example": "2022-07-19"
-          },
-          "avatarURL": {
+          "avatarUrl": {
             "type": "String",
             "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          },
+          "token": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWIxN2I2Y2RjOGI3NDIwNDZhNWI1ZSIsImlhdCI6MTY3MjE1NzExMCwiZXhwIjoxNjcyMjAwMzEwfQ.dioRsjzXYC8nOdmNLLq221mObm2sne-vFNexOtbqoh4"
+          },
+          "createdAt": {
+            "type": "String",
+            "example": "2022-12-27T16:05:10.175Z"
+          },
+          "updatedAt": {
+            "type": "String",
+            "example": "2022-12-27T16:41:16.237Z"
           }
+        },
+        "example": {
+          "_id": "63ab17b6cdc8b742046a5b5e",
+          "email": "sasha@gmail.com",
+          "name": "Sasha",
+          "city": "Kyiv, Obolon",
+          "phone": "0911111111",
+          "avatarUrl": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672159245/avatars/xde0wwarbwnfwe7p12gp.jpg",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWIxN2I2Y2RjOGI3NDIwNDZhNWI1ZSIsImlhdCI6MTY3MjE1NzExMCwiZXhwIjoxNjcyMjAwMzEwfQ.dioRsjzXYC8nOdmNLLq221mObm2sne-vFNexOtbqoh4",
+          "createdAt": "2022-12-27T16:05:10.175Z",
+          "updatedAt": "2022-12-27T16:41:16.237Z"
         }
       },
       "UserPet": {
         "type": "object",
         "properties": {
+          "_id": {
+            "type": "String",
+            "example": "63ab17e4cdc8b742046a5b62"
+          },
           "name": {
             "type": "String",
             "example": "Tom"
           },
           "birthday": {
-            "type": "String",
-            "example": "2022-07-19"
-          },
-          "date": {
             "type": "String",
             "example": "2022-07-19"
           },
@@ -726,19 +794,32 @@
           },
           "comments": {
             "type": "String",
-            "example": "Look at those paws! They will be so big when they're full grown!"
+            "example": "Good pet"
           },
           "avatarURL": {
             "type": "String",
-            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+            "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg"
           },
           "owner": {
             "type": "String",
-            "id": ""
+            "example": "63ab17b6cdc8b742046a5b5e"
           },
           "cloudId": {
-            "type": "String"
-          }
+            "type": "String",
+            "example": "avatars/pqys0k4rpbrlkrliywpw"
+          },
+          "__v": { "type": "Number", "example": 0 }
+        },
+        "example": {
+          "name": "Cat",
+          "birthday": null,
+          "breed": "Good",
+          "comments": null,
+          "avatarURL": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg",
+          "owner": "63ab17b6cdc8b742046a5b5e",
+          "cloudId": "avatars/pqys0k4rpbrlkrliywpw",
+          "_id": "63ab17e4cdc8b742046a5b62",
+          "__v": 0
         }
       },
 

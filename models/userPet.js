@@ -6,22 +6,23 @@ const userPetSchema = new Schema({
     type: String,
     minlength: 2,
     maxlength: 16,
+    required: true,
   },
   birthday: {
     type: String,
-  },
-  date: {
-    type: String,
+    default: null,
   },
   breed: {
     type: String,
     minlength: 2,
     maxlength: 16,
+    required: true,
   },
   comments: {
     type: String,
     minlength: 8,
     maxlength: 120,
+    default: null,
   },
   avatarURL: {
     type: String,
