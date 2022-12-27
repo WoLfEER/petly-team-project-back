@@ -6,13 +6,15 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const uploadImage = async imagePath => {
+const uploadImage = async (imagePath) => {
   const options = {
     use_filename: false,
     unique_filename: true,
     overwrite: true,
     folder: "avatars",
-    transformation: [{ width: 350, height: 350, crop: "fill", gravity: "face" }],
+    transformation: [
+      { width: 350, height: 350, crop: "fill", gravity: "face" },
+    ],
   };
 
   try {
@@ -24,9 +26,3 @@ const uploadImage = async imagePath => {
 };
 
 module.exports = uploadImage;
-
-
-
-
-
-

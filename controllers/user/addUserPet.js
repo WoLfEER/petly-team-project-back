@@ -5,9 +5,20 @@ const fs = require("fs").promises;
 
 const addUserPet = async (req, res) => {
   const { _id: owner } = req.user;
-  const { path: tempDir } = req.file;
+  const avatarInfo = {
+    avatarURL:
+      "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg",
+    cloudId: "avatars/pqys0k4rpbrlkrliywpw",
+  };
+  if (req.file) {
+    const { path: tempDir } = req.file;
 
-  const avatar = await uploadImage(tempDir);
+    const avatar = await uploadImage(tempDir);
+
+    avatarInfo.avatarURL = avatar.secure_url;
+    avatarInfo.cloudId = avatar.public_id;
+    fs.unlink(tempDir);
+  }
 
   if (!owner) {
     throw HttpError(404, "Not found");
@@ -15,8 +26,7 @@ const addUserPet = async (req, res) => {
 
   const userNotice = await UserPet.create({
     ...req.body,
-    avatarURL: avatar.secure_url,
-    cloudId: avatar.public_id,
+    ...avatarInfo,
     owner,
   });
 
@@ -28,12 +38,9 @@ const addUserPet = async (req, res) => {
     }
   );
 
-  fs.unlink(tempDir);
-
   if (!result) {
     throw HttpError(404, "Not found");
   }
-
   res.json(userNotice);
 };
 
