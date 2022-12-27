@@ -25,6 +25,7 @@
     "prettier": "^2.8.1",
     "streamifier": "^0.1.1",
     "swagger-ui-express": "^4.6.0",
+    "gravatar": "^1.8.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -34,7 +35,6 @@
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "5.2.0",
-    "gravatar": "^1.8.2",
     "nodemon": "2.0.15",
     "save": "^2.9.0"
   }

@@ -31,10 +31,10 @@ const userSchema = new Schema(
     birthday: {
       type: String,
     },
-    avatarURL: {
+    avatarUrl: {
       type: String,
+      required: true,
     },
-    favorites: [{ type: Schema.ObjectId, ref: "notice" }],
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
     token: {
       type: String,
