@@ -1,7 +1,8 @@
-const User = require("../../models/user");
+const {User} = require("../../models/user");
 const { HttpError } = require("../../helpers");
 
 const getUserPets = async (req, res) => {
+  console.log(req)
   const { _id: userId } = req.user;
   try {
     const currentUser = await User.findOne(
