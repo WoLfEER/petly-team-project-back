@@ -18,18 +18,23 @@ const noticeSchema = new Schema(
     },
     breed: {
       type: String,
+      default: ''
     },
     name: {
       type: String,
+      default: ''
     },
     location: {
       type: String,
+      default: ''
     },
     age: {
       type: String,
+      default: ''
     },
     sex: {
       type: String,
+      default: ''
     },
     price: {
       type: Number,
@@ -58,6 +63,7 @@ const noticeSchema = new Schema(
       type: String,
       minlength: 5,
       maxlength: 120,
+      default: ''
     },
     birthday: {
       type: String,

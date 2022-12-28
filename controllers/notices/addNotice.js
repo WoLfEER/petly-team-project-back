@@ -1,5 +1,5 @@
 const { Notice } = require("../../models/notice");
-const User = require("../../models/user");
+const {User} = require("../../models/user");
 const { HttpError, uploadImage } = require("../../helpers");
 const fs = require("fs").promises;
 
