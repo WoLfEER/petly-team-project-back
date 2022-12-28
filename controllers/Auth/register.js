@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../../models/user");
+const {User} = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
