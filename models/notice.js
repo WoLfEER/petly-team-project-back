@@ -18,23 +18,19 @@ const noticeSchema = new Schema(
     },
     breed: {
       type: String,
-      default: ''
+      default: "",
     },
     name: {
       type: String,
-      default: ''
+      default: "",
     },
     location: {
       type: String,
-      default: ''
-    },
-    age: {
-      type: String,
-      default: ''
+      default: "",
     },
     sex: {
       type: String,
-      default: ''
+      default: "",
     },
     price: {
       type: Number,
@@ -63,7 +59,7 @@ const noticeSchema = new Schema(
       type: String,
       minlength: 5,
       maxlength: 120,
-      default: ''
+      default: "",
     },
     birthday: {
       type: String,
@@ -83,7 +79,13 @@ const Notice = model("notice", noticeSchema);
 noticeSchema.post("save", handleSaveErrors);
 
 const noticesSchema = Joi.object({
-  category: Joi.string().valid("sell", "lost-found", "for-free", "favorite", "own"),
+  category: Joi.string().valid(
+    "sell",
+    "lost-found",
+    "for-free",
+    "favorite",
+    "own"
+  ),
   price: Joi.number().min(1).when("category", {
     is: "sell",
     then: Joi.required(),
