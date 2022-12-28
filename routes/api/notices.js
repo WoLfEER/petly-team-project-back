@@ -29,7 +29,7 @@ router.delete(
   controllerWrapper(deleteById)
 );
 // router.post("/own/:id", authenticate, isValidId, controllerWrapper(updateFavorites));
-router.get("/all/:id",  controllerWrapper(getById));
+router.get("/:id",  controllerWrapper(getById));
 // router.get("/owner", authenticate, controllerWrapper());
 
 module.exports = router;
