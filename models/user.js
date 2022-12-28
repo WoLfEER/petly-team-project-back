@@ -33,10 +33,9 @@ const userSchema = new Schema(
     },
     avatarUrl: {
       type: String,
-      required: true,
+      required: true, 
     },
-    myPets: [{ type: Schema.ObjectId, ref: "myPets" }],
-    notices: [{ type: Schema.ObjectId, ref: "notices" }],
+    myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
     favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
     own: [{ type: Schema.ObjectId, ref: "own" }],
     token: {

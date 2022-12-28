@@ -10,7 +10,7 @@ const getUserPets = async (req, res) => {
       },
       { password: 0, token: 0 }
     ).populate("myPets");
-
+      
     res.status(200).json(currentUser);
   } catch (error) {
     throw HttpError(404, error.message);
