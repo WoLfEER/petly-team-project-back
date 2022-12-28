@@ -1,6 +1,6 @@
 const { UserPet } = require("../../models/userPet");
 const User = require("../../models/user");
-const { HttpError, uploadImage } = require("../../helpers");
+const { uploadImage, HttpError } = require("../../helpers");
 const fs = require("fs").promises;
 
 const addUserPet = async (req, res) => {
@@ -32,7 +32,7 @@ const addUserPet = async (req, res) => {
 
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: { myPets: userNotice } },
+    { $push: { pets: userNotice } },
     {
       new: true,
     }

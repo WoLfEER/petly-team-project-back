@@ -17,17 +17,6 @@ const getByCategory = async (req, res, next) => {
     }
     throw HttpError(404, "Not found");
   }
-
-  const result = await Notice.find(
-    { category, title: { $regex: `${query}`, $options: "i" } },
-    "-createdAt -updatedAt",
-    { skip, limit }
-  ).sort({
-    createdAt: "desc",
-  });
-  if (result.length !== 0) {
-    return res.status(200).json(result);
-  }
-  throw HttpError(404, "Not found");
 };
+
 module.exports = getByCategory;

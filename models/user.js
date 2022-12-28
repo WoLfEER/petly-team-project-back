@@ -35,8 +35,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
-    token: {
+    pets: [{ type: Schema.ObjectId, ref: "pets" }],
+    notices: [{ type: Schema.ObjectId, ref: "notices" }],
+    token: {  
       type: String,
       default: null,
     },

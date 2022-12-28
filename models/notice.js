@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
-const categories = ["sell", "good-hands", "lost/found"];
+const categories = ["sell", "good-hands", "lost-found"];
 const birthdayRegexp =
   /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
 
@@ -10,11 +10,11 @@ const noticeSchema = new Schema(
     category: {
       type: String,
       enum: categories,
-      // required: [true, "Set name of category for notice"], 
+      required: [true, "Set name of category for notice"],
     },
     title: {
       type: String,
-      // required: [true, "Set title for notice"],
+      required: [true, "Set title for notice"],
     },
     breed: {
       type: String,
@@ -62,7 +62,7 @@ const noticeSchema = new Schema(
       trim: true,
       default: "00.00.0000",
     },
-    idCloud: {
+    cloudId: {
       type: String,
     },
   },
@@ -74,13 +74,12 @@ const Notice = model("notice", noticeSchema);
 noticeSchema.post("save", handleSaveErrors);
 
 const noticesSchema = Joi.object({
-  category: Joi.string().valid("sell", "good-hands", "lost/found"),
+  category: Joi.string().valid("sell", "good-hands", "lost-found"),
   price: Joi.number().min(1).when("category", {
     is: "sell",
     then: Joi.required(),
     otherwise: Joi.optional(),
   }),
-  title: Joi.string(),
   breed: Joi.string(),
   name: Joi.string(),
   place: Joi.string(),
