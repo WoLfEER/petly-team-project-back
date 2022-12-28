@@ -1,35 +1,99 @@
+const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
+const categories = ["sell", "lost-found", "for-free", "favorite", "own"];
+const birthdayRegexp =
+  /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
 
 const noticeSchema = new Schema(
   {
-    _id: {
+    category: {
       type: String,
-      required: true,
+      enum: categories,
+      required: [true, "Set name of category for notice"],
     },
     title: {
       type: String,
-      required: [true],
+      required: [true, "Set title for notice"],
     },
-    url: {
+    breed: {
       type: String,
-      required: [true],
     },
-    description: {
+    name: {
       type: String,
-      required: [true],
     },
-    date: {
+    location: {
       type: String,
-      required: true,
+    },
+    age: {
+      type: String,
+    },
+    sex: {
+      type: String,
+    },
+    price: {
+      type: Number,
+      required: [
+        function () {
+          if (this.category === "sell") return this.category;
+        },
+        "Price required",
+      ],
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+
+    info: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    avatarURL: {
+      type: String,
+    },
+    comments: {
+      type: String,
+      minlength: 5,
+      maxlength: 120,
+    },
+    birthday: {
+      type: String,
+      maxlength: 10,
+      trim: true,
+      default: "00.00.0000",
+    },
+    cloudId: {
+      type: String,
     },
   },
-
   { versionKey: false, timestamps: true }
 );
 
-noticeSchema.post("save", handleSaveErrors);
-
 const Notice = model("notice", noticeSchema);
 
-module.exports = Notice;
+noticeSchema.post("save", handleSaveErrors);
+
+const noticesSchema = Joi.object({
+  category: Joi.string().valid("sell", "lost-found", "for-free", "favorite", "own"),
+  price: Joi.number().min(1).when("category", {
+    is: "sell",
+    then: Joi.required(),
+    otherwise: Joi.optional(),
+  }),
+  breed: Joi.string(),
+  name: Joi.string(),
+  location: Joi.string(),
+  sex: Joi.string(),
+  comments: Joi.string(),
+  avatarURL: Joi.string(),
+  birthday: Joi.string().pattern(new RegExp(birthdayRegexp)),
+});
+const updateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean(),
+});
+
+const schemas = { noticesSchema, updateFavoriteSchema };
+module.exports = { schemas, Notice };
