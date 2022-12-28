@@ -22,10 +22,13 @@ const noticeSchema = new Schema(
     name: {
       type: String,
     },
-    place: {
+    location: {
       type: String,
     },
     age: {
+      type: String,
+    },
+    sex: {
       type: String,
     },
     price: {
@@ -82,7 +85,8 @@ const noticesSchema = Joi.object({
   }),
   breed: Joi.string(),
   name: Joi.string(),
-  place: Joi.string(),
+  location: Joi.string(),
+  sex: Joi.string(),
   comments: Joi.string(),
   avatarURL: Joi.string(),
   birthday: Joi.string().pattern(new RegExp(birthdayRegexp)),

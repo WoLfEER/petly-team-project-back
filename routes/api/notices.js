@@ -4,14 +4,15 @@ const {
   addNotice,
   deleteById,
   // updateFavorites,
-  getById,
+  getById
 } = require("../../controllers/notices");
 const { controllerWrapper, isValidId } = require("../../helpers");
 const { authenticate, upload } = require("../../middlewares");
 
 const router = express.Router();
 
-router.get("/:category", controllerWrapper(getByCategory))  
+router.get("/:category", controllerWrapper(getByCategory));
+
 router.post(
   "/addnotice",
   authenticate,
@@ -28,7 +29,7 @@ router.delete(
   controllerWrapper(deleteById)
 );
 // router.post("/own/:id", authenticate, isValidId, controllerWrapper(updateFavorites));
-router.get("/all/:id", controllerWrapper(getById));
+router.get("/all/:id",  controllerWrapper(getById));
 // router.get("/owner", authenticate, controllerWrapper());
 
 module.exports = router;

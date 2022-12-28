@@ -5,8 +5,6 @@ const getById = async (req, res) => {
   const { id } = req.params;
   const result = await Notice.findById(id, "-createdAt -updatedAt");
 
-  console.log(111, result);
-
   if (!result) {
     throw HttpError(404, "Not found");
   }

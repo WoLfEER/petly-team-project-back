@@ -10,8 +10,8 @@ const getByCategory = async (req, res, next) => {
   if (!query) {
     const result = await Notice.find({ category }, "-createdAt -updatedAt", {
       skip,
-      limit,
-    }).sort({ createdAt: "desc" });
+      limit,  
+    }).populate
     if (result !== 0) {
       return res.status(200).json(result);
     }
