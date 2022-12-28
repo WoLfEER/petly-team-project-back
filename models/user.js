@@ -33,7 +33,7 @@ const userSchema = new Schema(
     },
     avatarUrl: {
       type: String,
-      required: true, 
+      required: true,
     },
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
     favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
