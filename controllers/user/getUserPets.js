@@ -9,7 +9,7 @@ const getUserPets = async (req, res) => {
         _id: userId,
       },
       { password: 0, token: 0 }
-    ).populate("pets");
+    ).populate("myPets");
 
     res.status(200).json(currentUser);
   } catch (error) {

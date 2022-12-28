@@ -32,7 +32,7 @@ const addUserPet = async (req, res) => {
 
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: { pets: userNotice } },
+    { $push: { myPets: userNotice } },
     {
       new: true,
     }
