@@ -3,7 +3,7 @@ const router = express.Router();
 const ctrl = require("../../controllers/user");
 const { validateBody, authenticate, upload } = require("../../middlewares");
 const { controllerWrapper } = require("../../helpers");
-const {schemas} = require("../../models/user");
+const {schemas} = require("../../models/userPet");
 
 router.get("/userinfo", authenticate, controllerWrapper(ctrl.getUserPets));
 router.post(

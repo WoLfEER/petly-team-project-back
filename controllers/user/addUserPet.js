@@ -1,5 +1,5 @@
 const { UserPet } = require("../../models/userPet");
-const User = require("../../models/user");
+const {User} = require("../../models/user");
 const { HttpError, uploadImage } = require("../../helpers");
 const fs = require("fs").promises;
 
