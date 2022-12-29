@@ -42,6 +42,7 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    notices: [{ type: Schema.ObjectId, ref: "notices" }],
   },
   { versionKey: false, timestamps: true }
 );

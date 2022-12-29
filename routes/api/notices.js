@@ -3,8 +3,8 @@ const {
   getByCategory,
   addNotice,
   deleteById,
-  // updateFavorites,
-  getById
+  updateFavorites,
+  getById,
 } = require("../../controllers/notices");
 const { controllerWrapper, isValidId } = require("../../helpers");
 const { authenticate, upload } = require("../../middlewares");
@@ -28,8 +28,8 @@ router.delete(
   isValidId,
   controllerWrapper(deleteById)
 );
-// router.post("/own/:id", authenticate, isValidId, controllerWrapper(updateFavorites));
-router.get("/:id",  controllerWrapper(getById));
+router.post("/own/:id", authenticate, controllerWrapper(updateFavorites));
+router.get("/:id", controllerWrapper(getById));
 // router.get("/owner", authenticate, controllerWrapper());
 
 module.exports = router;
