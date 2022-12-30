@@ -1,6 +1,8 @@
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
 const emailRegexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const Joi = require("joi");
+
 
 const userSchema = new Schema(
   {
@@ -21,11 +23,9 @@ const userSchema = new Schema(
     },
     city: {
       type: String,
-      // required: true,
     },
     phone: {
       type: String,
-      // required: true,
       unique: true,
     },
     birthday: {
@@ -35,18 +35,45 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    pets: [{ type: Schema.ObjectId, ref: "pets" }],
-    notices: [{ type: Schema.ObjectId, ref: "notices" }],
-    token: {  
+    myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
+    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
+    own: [{ type: Schema.ObjectId, ref: "own" }],
+    token: {
       type: String,
       default: null,
     },
+    notices: [{ type: Schema.ObjectId, ref: "notices" }],
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.post("save", handleSaveErrors);
 
+
+const loginSchema = Joi.object({
+  password: Joi.string().min(1).max(32).required(),
+  email: Joi.string().required(),
+});
+
+const registerSchema = Joi.object({
+  password: Joi.string().max(32).required(),
+  email: Joi.string().email().required(),
+  name: Joi.string().required(),
+  city: Joi.string()
+    .required(),
+    // .pattern(/^(\w+(,)\s*)+\w+$/),
+  phone: Joi.string().required(),
+  // .pattern(/^\+380\d{9}$/, "numbers"),
+});
+
+const schemas = {
+  loginSchema,
+  registerSchema,
+};
+
 const User = model("user", userSchema);
 
-module.exports = User;
+module.exports = {
+  User,
+  schemas
+};

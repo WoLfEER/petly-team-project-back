@@ -1,9 +1,10 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
-const categories = ["sell", "good-hands", "lost-found"];
+const categories = ["sell", "lost-found", "for-free", "favorite", "own"];
 const birthdayRegexp =
   /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
+const sex = ["male", "female"];
 
 const noticeSchema = new Schema(
   {
@@ -18,15 +19,20 @@ const noticeSchema = new Schema(
     },
     breed: {
       type: String,
+      default: "",
     },
     name: {
       type: String,
+      default: "",
     },
-    place: {
+    location: {
       type: String,
+      default: "",
     },
-    age: {
+    sex: {
       type: String,
+      enum: sex,
+      default: "",
     },
     price: {
       type: Number,
@@ -55,6 +61,7 @@ const noticeSchema = new Schema(
       type: String,
       minlength: 5,
       maxlength: 120,
+      default: "",
     },
     birthday: {
       type: String,
@@ -74,7 +81,13 @@ const Notice = model("notice", noticeSchema);
 noticeSchema.post("save", handleSaveErrors);
 
 const noticesSchema = Joi.object({
-  category: Joi.string().valid("sell", "good-hands", "lost-found"),
+  category: Joi.string().valid(
+    "sell",
+    "lost-found",
+    "for-free",
+    "favorite",
+    "own"
+  ),
   price: Joi.number().min(1).when("category", {
     is: "sell",
     then: Joi.required(),
@@ -82,8 +95,10 @@ const noticesSchema = Joi.object({
   }),
   breed: Joi.string(),
   name: Joi.string(),
-  place: Joi.string(),
+  location: Joi.string(),
+  sex: Joi.string(),
   comments: Joi.string(),
+  title: Joi.string(),
   avatarURL: Joi.string(),
   birthday: Joi.string().pattern(new RegExp(birthdayRegexp)),
 });
