@@ -6,6 +6,8 @@ const fs = require("fs").promises;
 const addNotice = async (req, res) => {
   const { _id: owner } = req.user;
 
+
+  
   const avatarInfo = {
     avatarURL:
       "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",

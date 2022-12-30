@@ -9,35 +9,35 @@ const updateFavorites = async (req, res) => {
   // console.log(result.info);
 
   // delete
-  if (result.info.includes(id)) {
-    const noticeFavoriteDelete = await Notice.findByIdAndUpdate(
-      noticeId,
-      { $pull: { info: id } },
-      { new: true }
-    );
-    const userFavoriteDelete = await User.findByIdAndUpdate(
+
+  if (result.like.includes(id)) {
+    const userFavorite = await User.findByIdAndUpdate(
       id,
       { $pull: { favorites: noticeId } },
       { new: true }
     );
-
-    res.json({ noticeFavoriteDelete, userFavoriteDelete });
+    const noticeFavorite = await Notice.findByIdAndUpdate(
+      noticeId,
+      { $pull: { like: id } },
+      { new: true }
+    );
+    res.json({ userFavorite, noticeFavorite });
     return;
   }
 
   // add
-  const noticeFavorite = await Notice.findByIdAndUpdate(
-    noticeId,
-    { $push: { info: id } },
-    { new: true }
-  );
   const userFavorite = await User.findByIdAndUpdate(
     id,
     { $push: { favorites: noticeId } },
     { new: true }
   );
+  const noticeFavorite = await Notice.findByIdAndUpdate(
+    noticeId,
+    { $push: { like: id } },
+    { new: true }
+  );
 
-  res.json({ noticeFavorite, userFavorite });
+  res.json({ userFavorite, noticeFavorite });
 };
 
 module.exports = updateFavorites;

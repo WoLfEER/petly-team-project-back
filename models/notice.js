@@ -54,6 +54,12 @@ const noticeSchema = new Schema(
         ref: "user",
       },
     ],
+    like : [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      }
+    ],
     avatarURL: {
       type: String,
     },
