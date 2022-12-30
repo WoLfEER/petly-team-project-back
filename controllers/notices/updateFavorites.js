@@ -9,7 +9,6 @@ const updateFavorites = async (req, res) => {
   // console.log(result.info);
 
   // delete
-
   if (result.info.includes(id)) {
     const noticeFavoriteDelete = await Notice.findByIdAndUpdate(
       noticeId,
