@@ -40,6 +40,4 @@ router.delete(
   controllerWrapper(deleteById)
 );
 
-
-
 module.exports = router;
