@@ -4,6 +4,7 @@ const { handleSaveErrors } = require("../helpers");
 const categories = ["sell", "lost-found", "for-free", "favorite", "own"];
 const birthdayRegexp =
   /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
+const sex = ["male", "female"];
 
 const noticeSchema = new Schema(
   {
@@ -30,6 +31,7 @@ const noticeSchema = new Schema(
     },
     sex: {
       type: String,
+      enum: sex,
       default: "",
     },
     price: {
@@ -96,6 +98,7 @@ const noticesSchema = Joi.object({
   location: Joi.string(),
   sex: Joi.string(),
   comments: Joi.string(),
+  title: Joi.string(),
   avatarURL: Joi.string(),
   birthday: Joi.string().pattern(new RegExp(birthdayRegexp)),
 });

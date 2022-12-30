@@ -1,5 +1,5 @@
 const { Notice } = require("../../models/notice");
-const {User} = require("../../models/user");
+const { User } = require("../../models/user");
 const { HttpError, uploadImage } = require("../../helpers");
 const fs = require("fs").promises;
 
@@ -8,7 +8,7 @@ const addNotice = async (req, res) => {
 
   const avatarInfo = {
     avatarURL:
-      "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg",
+      "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
     cloudId: "avatars/pqys0k4rpbrlkrliywpw",
   };
 
