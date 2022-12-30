@@ -3,8 +3,10 @@ const { HttpError } = require("../../helpers");
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const result = await Notice.findById(id, "-createdAt -updatedAt");
-
+  const result = await Notice.findById(id).populate({
+    path: "owner",
+    select: "phone email id",
+  });
   if (!result) {
     throw HttpError(404, "Not found");
   }
