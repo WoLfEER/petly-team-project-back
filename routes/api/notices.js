@@ -12,7 +12,7 @@ const { schemas } = require("../../models/notice");
 
 const router = express.Router();
 
-// router.get("/:category", controllerWrapper(getByCategory));
+router.get("/:category", controllerWrapper(getByCategory));
 
 router.post(
   "/addnotice",
