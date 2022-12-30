@@ -20,7 +20,7 @@ router.post(
 
 // router.get("/owner/favorite", controllerWrapper(testController));
 // router.get("/owner/:owner", controllerWrapper(testController));
+router.get("/:id", isValidId, controllerWrapper(getById));
 router.delete("/:id", authenticate, isValidId, controllerWrapper(deleteById));
-router.get("/:id", authenticate, isValidId, controllerWrapper(getById));
 
 module.exports = router;
