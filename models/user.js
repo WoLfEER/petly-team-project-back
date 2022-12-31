@@ -3,7 +3,6 @@ const { handleSaveErrors } = require("../helpers");
 const emailRegexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 const Joi = require("joi");
 
-
 const userSchema = new Schema(
   {
     password: {
@@ -36,7 +35,7 @@ const userSchema = new Schema(
       required: true,
     },
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
-    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
+    // favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
     own: [{ type: Schema.ObjectId, ref: "own" }],
     token: {
       type: String,
@@ -49,7 +48,6 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleSaveErrors);
 
-
 const loginSchema = Joi.object({
   password: Joi.string().min(1).max(32).required(),
   email: Joi.string().required(),
@@ -59,9 +57,8 @@ const registerSchema = Joi.object({
   password: Joi.string().max(32).required(),
   email: Joi.string().email().required(),
   name: Joi.string().required(),
-  city: Joi.string()
-    .required(),
-    // .pattern(/^(\w+(,)\s*)+\w+$/),
+  city: Joi.string().required(),
+  // .pattern(/^(\w+(,)\s*)+\w+$/),
   phone: Joi.string().required(),
   // .pattern(/^\+380\d{9}$/, "numbers"),
 });
@@ -75,5 +72,5 @@ const User = model("user", userSchema);
 
 module.exports = {
   User,
-  schemas
+  schemas,
 };

@@ -27,12 +27,20 @@ router.post(
   controllerWrapper(addNotice)
 );
 
-router.post(
-  "/own/:id",
+// router.post(
+//   "/own/:id",
+//   authenticate,
+//   validateBody(schemas.updateFavoriteSchema),
+//   controllerWrapper(updateFavorites)
+// )
+// ;
+router.patch(
+  "/own/:id/favorites",
   authenticate,
   validateBody(schemas.updateFavoriteSchema),
   controllerWrapper(updateFavorites)
-);
+)
+;
 router.delete(
   "/own/:id",
   authenticate,
