@@ -8,31 +8,23 @@ const updateFavorites = async (req, res) => {
   const result = await Notice.findById(noticeId);
 
   if (result.like.includes(id)) {
-    const userFavorite = await User.findByIdAndUpdate(
-      id,
-      { $pull: { favorites: noticeId } },
-      { new: true }
-    );
-    const noticeFavorite = await Notice.findByIdAndUpdate(
-      noticeId,
-      { $pull: { like: id } },
-      { new: true }
-    );
+    const userFavorite = await User.findByIdAndUpdate(id, {
+      $pull: { favorites: noticeId },
+    });
+    await Notice.findByIdAndUpdate(noticeId, {
+      $pull: { like: id },
+    });
     res.json({ userFavorite });
     return;
   }
 
   // add
-  const userFavorite = await User.findByIdAndUpdate(
-    id,
-    { $push: { favorites: noticeId } },
-    { new: true }
-  );
-  const noticeFavorite = await Notice.findByIdAndUpdate(
-    noticeId,
-    { $push: { like: id } },
-    { new: true }
-  );
+  const userFavorite = await User.findByIdAndUpdate(id, {
+    $push: { favorites: noticeId },
+  });
+  await Notice.findByIdAndUpdate(noticeId, {
+    $push: { like: id },
+  });
 
   res.json({ userFavorite });
 };

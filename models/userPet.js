@@ -2,7 +2,6 @@ const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
 const Joi = require("joi").extend(require("@joi/date"));
 
-
 const userPetSchema = new Schema({
   name: {
     type: String,
@@ -68,7 +67,7 @@ const UserPet = model("userPet", userPetSchema);
 
 const schemas = {
   petSchema,
-  updateUserSchema
+  updateUserSchema,
 };
 
 module.exports = { schemas, UserPet };

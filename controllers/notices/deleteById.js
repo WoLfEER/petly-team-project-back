@@ -2,8 +2,6 @@ const { HttpError } = require("../../helpers");
 const { Notice } = require("../../models/notice");
 
 const deleteById = async (req, res) => {
-
-  console.log(HttpError);
   const { id } = req.params;
   const result = await Notice.findByIdAndRemove(id);
   if (!result) {
