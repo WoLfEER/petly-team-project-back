@@ -35,7 +35,7 @@ const addNotice = async (req, res) => {
 
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: { notices: userNotice } },
+    { $push: { own: userNotice } },
     {
       new: true,
     }
