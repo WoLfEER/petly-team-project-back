@@ -2,7 +2,7 @@ const { User } = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { UserPet } = require("../../models/userPet");
+
 const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
@@ -23,7 +23,7 @@ const login = async (req, res) => {
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
   await User.findByIdAndUpdate(user._id, { token });
-  const result = await User.findById(user._id).populate("myPets");
+  const result = await User.findById(user._id).populate("q", {owner : 0});
 
   res.json({
     result,
