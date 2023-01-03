@@ -18,7 +18,7 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      required: true,
+      required: true, 
     },
     city: {
       type: String,
@@ -35,8 +35,8 @@ const userSchema = new Schema(
       required: true,
     },
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
-    // favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
-    own: [{ type: Schema.ObjectId, ref: "own" }],
+    favorites: [{ type: Schema.ObjectId, ref: "notice" }],
+    // own: [{ type: Schema.ObjectId, ref: "own" }],
     token: {
       type: String,
       default: null,

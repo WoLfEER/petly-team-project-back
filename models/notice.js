@@ -48,26 +48,12 @@ const noticeSchema = new Schema(
       ref: "user",
     },
 
-    info: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-      },
-    ],
     like: [
       {
         type: Schema.Types.ObjectId,
         ref: "user",
       },
     ],
-    favorite: {
-      type: Boolean,
-      default: false,
-    },
-    own: {
-      type: Boolean,
-      default: false,
-    },
     avatarURL: {
       type: String,
     },

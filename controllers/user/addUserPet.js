@@ -7,7 +7,7 @@ const fs = require("fs").promises;
 
 const addUserPet = async (req, res) => {
   const { _id: owner } = req.user;
-  const defaultAvatar = 'https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg'
+  const defaultAvatar = 'https://res.cloudinary.com/dhfk2xkow/image/upload/v1672449970/2022-12-31_03.25.57_kg0nt2.jpg'
   const avatarInfo = {
     avatarURL:
     defaultAvatar,

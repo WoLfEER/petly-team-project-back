@@ -33,7 +33,7 @@ router.post(
 //   validateBody(schemas.updateFavoriteSchema),
 //   controllerWrapper(updateFavorites)
 // )
-// ;
+// // ;
 router.patch(
   "/own/:id/favorites",
   authenticate,

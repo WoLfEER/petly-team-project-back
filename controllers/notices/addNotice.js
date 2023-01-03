@@ -6,8 +6,6 @@ const fs = require("fs").promises;
 const addNotice = async (req, res) => {
   const { _id: owner } = req.user;
 
-
-  
   const avatarInfo = {
     avatarURL:
       "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
@@ -24,10 +22,15 @@ const addNotice = async (req, res) => {
     fs.unlink(tempDir);
   }
 
-  const userNotice = await Notice.create({
+  let userNotice = await Notice.create({
     ...req.body,
     ...avatarInfo,
     owner,
+  });
+
+  userNotice = await userNotice.populate({
+    path: "owner",
+    select: "id phone email",
   });
 
   const result = await User.findByIdAndUpdate(
