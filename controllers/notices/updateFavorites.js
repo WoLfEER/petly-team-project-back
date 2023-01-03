@@ -13,11 +13,11 @@ const updateFavorites = async (req, res) => {
       { $pull: { favorites: noticeId } },
       { new: true }
     );
-    const noticeFavorite = await Notice.findByIdAndUpdate(
-      noticeId,
-      { $pull: { like: id } },
-      { new: true }
-    );
+    // const noticeFavorite = await Notice.findByIdAndUpdate(
+    //   noticeId,
+    //   { $pull: { like: id } },
+    //   { new: true }
+    // );
     res.json({ userFavorite });
     return;
   }
@@ -28,11 +28,11 @@ const updateFavorites = async (req, res) => {
     { $push: { favorites: noticeId } },
     { new: true }
   );
-  const noticeFavorite = await Notice.findByIdAndUpdate(
-    noticeId,
-    { $push: { like: id } },
-    { new: true }
-  );
+//   const noticeFavorite = await Notice.findByIdAndUpdate(
+//     noticeId,
+//     { $push: { like: id } },
+//     { new: true }
+//   );
 
   res.json({ userFavorite });
 };

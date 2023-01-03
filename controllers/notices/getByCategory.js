@@ -9,7 +9,7 @@ const getByCategory = async (req, res, next) => {
   // const skip = (page - 1) * limit;
   if (!query) {
     const result = await Notice.find({ category }).populate({
-      path: "info",
+      path: "owner",
       select: "id phone email",
     });
     if (result !== 0) {
