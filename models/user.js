@@ -35,17 +35,32 @@ const userSchema = new Schema(
       required: true,
     },
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
+<<<<<<< HEAD
     favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
     token: {
+=======
+    accessToken: {
+>>>>>>> c58cd46bf1ddc76b3587f42bb0f0664ea16a2f28
       type: String,
       default: null,
     },
+    refreshToken: {
+     type: String,
+      default: null,
+    },
+    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
+          
     own: [{ type: Schema.ObjectId, ref: "notices" }],
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.post("save", handleSaveErrors);
+
+
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
 
 const loginSchema = Joi.object({
   password: Joi.string().min(1).max(32).required(),
@@ -65,11 +80,12 @@ const registerSchema = Joi.object({
 const schemas = {
   loginSchema,
   registerSchema,
+refreshSchema
 };
 
 const User = model("user", userSchema);
 
-module.exports = {
-  User,
-  schemas,
-};
+
+module.exports = { User, schemas };
+
+
