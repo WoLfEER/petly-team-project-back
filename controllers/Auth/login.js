@@ -23,7 +23,10 @@ const login = async (req, res) => {
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
   await User.findByIdAndUpdate(user._id, { token });
-  user = await User.findById(user._id).populate("myPets", { owner: 0 });
+  user = await User.findById(user._id, { password: 0 }).populate("myPets", {
+    owner: 0,
+    password: 0,
+  });
 
   res.json({
     user,
