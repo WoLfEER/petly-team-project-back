@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { controllerWrapper } = require("../../helpers");
+
 const { validateBody, authenticate, passport } = require("../../middlewares");
 const { registerSchema, loginSchema } = require("../../schemas");
 const ctrl = require("../../controllers/Auth");
@@ -29,5 +30,6 @@ router.get(
   passport.authenticate("google", { session: false }),
   ctrl.googleAuth
 );
+
 
 module.exports = router;

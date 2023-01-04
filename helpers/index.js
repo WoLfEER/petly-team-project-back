@@ -3,6 +3,8 @@ const handleSaveErrors = require("./handleSaveErrors");
 const HttpError = require("./HttpError");
 const uploadImage = require("./cloudinary");
 const createTokens = require("./createTocens");
+const isValidId = require("./isValidId");
+
 
 module.exports = {
   controllerWrapper,
@@ -10,4 +12,5 @@ module.exports = {
   HttpError,
   uploadImage,
   createTokens,
+  isValidId,
 };

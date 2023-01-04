@@ -1,6 +1,8 @@
 const uploadImage = require("../../helpers/cloudinary");
 
+
 const { User } = require("../../models/user");
+
 const { HttpError } = require("../../helpers");
 
 const updateUser = async (req, res) => {

@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
+const Joi = require("joi").extend(require("@joi/date"));
 
 const userPetSchema = new Schema({
   name: {
@@ -38,6 +39,35 @@ const userPetSchema = new Schema({
 
 userPetSchema.post("save", handleSaveErrors);
 
+const petSchema = Joi.object({
+  name: Joi.string()
+    .regex(/^[a-zA-Z]+$/)
+    .min(2)
+    .max(16)
+    .required(),
+  birthday: Joi.date(),
+  breed: Joi.string()
+    .regex(/^[a-zA-Z]+$/)
+    .min(2)
+    .max(16)
+    .required(),
+  comments: Joi.string().min(8).max(120),
+  avatarURL: Joi.string(),
+});
+
+const updateUserSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string().email(),
+  birthday: Joi.date().format("DD.MM.YYYY").utc(),
+  phone: Joi.string().pattern(/^\+380\d{9}$/, "numbers"),
+  city: Joi.string().pattern(/[A-Z][a-z]*/),
+});
+
 const UserPet = model("userPet", userPetSchema);
 
-module.exports = { UserPet };
+const schemas = {
+  petSchema,
+  updateUserSchema,
+};
+
+module.exports = { schemas, UserPet };

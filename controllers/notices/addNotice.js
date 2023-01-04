@@ -1,18 +1,17 @@
-const { UserPet } = require("../../models/userPet");
-
+const { Notice } = require("../../models/notice");
 const { User } = require("../../models/user");
 const { HttpError, uploadImage } = require("../../helpers");
-
 const fs = require("fs").promises;
 
-const addUserPet = async (req, res) => {
+const addNotice = async (req, res) => {
   const { _id: owner } = req.user;
-  const defaultAvatar =
-    "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672449970/2022-12-31_03.25.57_kg0nt2.jpg";
+
   const avatarInfo = {
-    avatarURL: defaultAvatar,
+    avatarURL:
+      "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
     cloudId: "avatars/pqys0k4rpbrlkrliywpw",
   };
+
   if (req.file) {
     const { path: tempDir } = req.file;
 
@@ -23,19 +22,20 @@ const addUserPet = async (req, res) => {
     fs.unlink(tempDir);
   }
 
-  if (!owner) {
-    throw HttpError(404, "Not found");
-  }
-
-  const userNotice = await UserPet.create({
+  let userNotice = await Notice.create({
     ...req.body,
     ...avatarInfo,
     owner,
   });
 
+  userNotice = await userNotice.populate({
+    path: "owner",
+    select: "id phone email",
+  });
+
   const result = await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: { myPets: userNotice } },
+    { $push: { own: userNotice } },
     {
       new: true,
     }
@@ -47,4 +47,4 @@ const addUserPet = async (req, res) => {
   res.json(userNotice);
 };
 
-module.exports = addUserPet;
+module.exports = addNotice;

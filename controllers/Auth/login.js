@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
   if (!user) {
     throw HttpError(401, " Email or password invalid");
   }
@@ -17,15 +17,14 @@ const login = async (req, res) => {
   const { accessToken, refreshToken } = await createTokens(user._id);
 
   await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+  user = await User.findById(user._id, { password: 0 }).populate("myPets", {
+    owner: 0,
+  });
 
   res.json({
-    accessToken,
-    refreshToken,
-    user: {
-      id: user._id,
-      email,
-    },
+    user,
   });
 };
 
 module.exports = login;
+

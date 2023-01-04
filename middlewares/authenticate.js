@@ -3,10 +3,12 @@ const { HttpError } = require("../helpers");
 const { User } = require("../models/user");
 const { SECRET_KEY_ACCESS } = process.env;
 
+
 const authenticate = async (req, res, next) => {
   try {
     const { authorization = "" } = req.headers;
     const [bearer = "", accessToken = ""] = authorization.split(" ");
+
     if (bearer !== "Bearer") {
       throw HttpError(401, "Not authorized");
     }

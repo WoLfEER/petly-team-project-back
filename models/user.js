@@ -22,11 +22,9 @@ const userSchema = new Schema(
     },
     city: {
       type: String,
-      // required: true,
     },
     phone: {
       type: String,
-      // required: true,
       unique: true,
     },
     birthday: {
@@ -42,23 +40,47 @@ const userSchema = new Schema(
       default: null,
     },
     refreshToken: {
-      type: String,
+     type: String,
       default: null,
     },
+    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
+          
+    own: [{ type: Schema.ObjectId, ref: "notices" }],
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.post("save", handleSaveErrors);
 
+
 const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
+const loginSchema = Joi.object({
+  password: Joi.string().min(1).max(32).required(),
+  email: Joi.string().required(),
+});
+
+const registerSchema = Joi.object({
+  password: Joi.string().max(32).required(),
+  email: Joi.string().email().required(),
+  name: Joi.string().required(),
+  city: Joi.string().required(),
+  // .pattern(/^(\w+(,)\s*)+\w+$/),
+  phone: Joi.string().required(),
+  // .pattern(/^\+380\d{9}$/, "numbers"),
+});
+
 const schemas = {
-  refreshSchema,
+  loginSchema,
+  registerSchema,
+refreshSchema
 };
 
 const User = model("user", userSchema);
 
+
 module.exports = { User, schemas };
+
+
