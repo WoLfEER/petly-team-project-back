@@ -7,6 +7,7 @@ const {
   getById,
   getOwn,
   getFavorite,
+  deleteFavorites,
 } = require("../../controllers/notices");
 const { controllerWrapper, isValidId } = require("../../helpers");
 const { authenticate, upload, validateBody } = require("../../middlewares");
@@ -33,13 +34,21 @@ router.post(
   validateBody(schemas.updateFavoriteSchema),
   controllerWrapper(updateFavorites)
 );
-// ;
+
 router.patch(
   "/own/:id/favorites",
   authenticate,
   validateBody(schemas.updateFavoriteSchema),
   controllerWrapper(updateFavorites)
 );
+
+router.delete(
+  "/own/:id/favorites",
+  authenticate,
+  validateBody(schemas.updateFavoriteSchema),
+  controllerWrapper(deleteFavorites)
+);
+
 router.delete(
   "/own/:id",
   authenticate,

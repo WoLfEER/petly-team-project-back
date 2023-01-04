@@ -1,21 +1,46 @@
+// const { HttpError } = require("../../helpers");
+// const { User } = require("../../models/user");
+
+// const updateFavorites = async (req, res) => {
+//   const { id } = req.user;
+//   const { id: noticeId } = req.params;
+
+//   const user = await User.findById(id);
+//   const isAdded = user.favorites.includes(noticeId);
+
+//   if (isAdded) {
+//     throw HttpError(409, "already in favs");
+//   }
+
+//   user.favorites.push(noticeId);
+//   await user.save();
+//   res.json(user);
+// };
+
+// module.exports = updateFavorites;
+
+//
+
 const { User } = require("../../models/user");
 
 const updateFavorites = async (req, res) => {
   const { id } = req.user;
   const { id: noticeId } = req.params;
-    // const { favorite } = req.body;
+  // const { favorite } = req.body;
   //   const result = await Notice.findById(noticeId);
 
-  const user = await User.findById(id);
+  let user = await User.findByIdAndUpdate(id);
   const isAdded = user.favorites.includes(noticeId);
 
-
   if (isAdded) {
-    res.json(1111);
+    res.status(409).json({ message: "already in favs" });
     return;
   }
-
-  user.favorites.push(noticeId);
+  user = await User.findByIdAndUpdate(
+    id,
+    { $push: { favorites: noticeId } },
+    { new: true }
+  );
   res.json(user);
 };
 
