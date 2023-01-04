@@ -9,6 +9,8 @@ const { User } = require("../models/user");
 const { v4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 
+console.log(1111111, GOOGLE_CLIENT_ID);
+
 const googleParams = {
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
