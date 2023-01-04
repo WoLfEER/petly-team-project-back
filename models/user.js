@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
 const emailRegexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const Joi = require("joi");
 
 const userSchema = new Schema(
   {
@@ -36,7 +37,11 @@ const userSchema = new Schema(
       required: true,
     },
     myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
-    token: {
+    accessToken: {
+      type: String,
+      default: null,
+    },
+    refreshToken: {
       type: String,
       default: null,
     },
@@ -46,6 +51,14 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleSaveErrors);
 
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
+
+const schemas = {
+  refreshSchema,
+};
+
 const User = model("user", userSchema);
 
-module.exports = User;
+module.exports = { User, schemas };
