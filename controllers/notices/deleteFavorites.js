@@ -14,15 +14,14 @@ const deleteFavorites = async (req, res) => {
       { new: true }
     );
     res.status(200).json({
-      status: "success",
-      code: 200,
+      status: 200,
       message: "Your notice deleted",
       data: {
         id: noticeId,
       },
     });
   }
-  res.status(409).json({ code: 409, message: "empty favorites" });
+  res.status(409).json({ status: 409, message: "empty favorites" });
 };
 
 module.exports = deleteFavorites;

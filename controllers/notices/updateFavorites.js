@@ -8,17 +8,18 @@ const updateFavorites = async (req, res) => {
   const isAdded = user.favorites.includes(noticeId);
 
   if (isAdded) {
-    res.status(409).json({ message: "Notice already in favorites" });
+    res
+      .status(409)
+      .json({ status: 409, message: "Notice already in favorites" });
     return;
   }
   user = await User.findByIdAndUpdate(
-    id, 
+    id,
     { $push: { favorites: noticeId } },
     { new: true }
   );
   res.status(200).json({
-    status: "success",
-    code: 200,
+    status: 200,
     message: "Notice added to favorite",
     data: {
       id: noticeId,
