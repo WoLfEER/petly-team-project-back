@@ -184,6 +184,84 @@
         }
       }
     },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Get new pair of tokens (use Bearer {refreshToken} instead of accessToken)",
+        "description": "Get new pair of tokens (use Bearer {refreshToken} instead of accessToken)",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Request body with refreshToken",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "String",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWRlOTU3ZjdiNjc5NDAwYTE5NzA0OCIsImlhdCI6MTY3MjM0MjA2MCwiZXhwIjoxNjcyOTQ2ODYwfQ.LJARg27cOqzXLz4TNVC7eGMuX7tU0k23h0vvKMt8TmI"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "String",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWNhZmI0NWRkMWU0MTFiNTMzZGE5NCIsImlhdCI6MTY3MjI2MTY0OSwiZXhwIjoxNjcyMjYyNTQ5fQ.QSCEw4gTCrGuC1pH6JhNpxsBh6mbm7TCp4ZSp87vxT0"
+                    },
+                    "refreshToken": {
+                      "type": "String",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWNhZmI0NWRkMWU0MTFiNTMzZGE5NCIsImlhdCI6MTY3MjI2MTY0OSwiZXhwIjoxNjcyODY2NDQ5fQ.84RVq9Ayj4Yz46TkNGR6iSyV_AiDLKOnHDuRZu3oXHY"
+                    },
+                    "id": {
+                      "type": "String",
+                      "example": "63ac88befc04331a6e456b7e"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Authorization on the site using Google OAuth API",
+        "description": "Authorization on the site using Google OAuth API",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "201": {
+            "description": "Successful operation"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/friends": {
       "get": {
         "tags": ["Services-sidebar"],
@@ -288,7 +366,7 @@
                     "type": "String",
                     "example": "2022-07-19"
                   },
-                  "avatarURL": {
+                  "avatar": {
                     "type": "String",
                     "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
                   }
@@ -351,7 +429,7 @@
                     "type": "String",
                     "example": "Look at those paws! They will be so big when they're full grown!"
                   },
-                  "avatarURL": {
+                  "avatar": {
                     "type": "String",
                     "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
                   }

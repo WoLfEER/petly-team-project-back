@@ -1,9 +1,6 @@
 const { User } = require("../../models/user");
-const { HttpError } = require("../../helpers");
+const { HttpError, createTokens } = require("../../helpers");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -17,13 +14,12 @@ const login = async (req, res) => {
     throw HttpError(401, " Email or password invalid");
   }
 
-  const payload = {
-    id: user._id,
-  };
+  const { accessToken, refreshToken } = await createTokens(user._id);
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
-  await User.findByIdAndUpdate(user._id, { token });
-  user = await User.findById(user._id).populate("myPets", { owner: 0 });
+  await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+  user = await User.findById(user._id, { password: 0 }).populate("myPets", {
+    owner: 0,
+  });
 
   res.json({
     user,
@@ -31,3 +27,4 @@ const login = async (req, res) => {
 };
 
 module.exports = login;
+
