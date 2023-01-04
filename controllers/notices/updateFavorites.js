@@ -1,3 +1,33 @@
+const { User } = require("../../models/user");
+
+const updateFavorites = async (req, res) => {
+  const { id } = req.user;
+  const { id: noticeId } = req.params;
+
+  let user = await User.findByIdAndUpdate(id);
+  const isAdded = user.favorites.includes(noticeId);
+
+  if (isAdded) {
+    res.status(409).json({ message: "Notice already in favorites" });
+    return;
+  }
+  user = await User.findByIdAndUpdate(
+    id, 
+    { $push: { favorites: noticeId } },
+    { new: true }
+  );
+  res.status(200).json({
+    status: "success",
+    code: 200,
+    message: "Notice added to favorite",
+    data: {
+      id: noticeId,
+    },
+  });
+};
+
+module.exports = updateFavorites;
+
 // const { HttpError } = require("../../helpers");
 // const { User } = require("../../models/user");
 
@@ -20,28 +50,3 @@
 // module.exports = updateFavorites;
 
 //
-
-const { User } = require("../../models/user");
-
-const updateFavorites = async (req, res) => {
-  const { id } = req.user;
-  const { id: noticeId } = req.params;
-  // const { favorite } = req.body;
-  //   const result = await Notice.findById(noticeId);
-
-  let user = await User.findByIdAndUpdate(id);
-  const isAdded = user.favorites.includes(noticeId);
-
-  if (isAdded) {
-    res.status(409).json({ message: "already in favs" });
-    return;
-  }
-  user = await User.findByIdAndUpdate(
-    id,
-    { $push: { favorites: noticeId } },
-    { new: true }
-  );
-  res.json(user);
-};
-
-module.exports = updateFavorites;

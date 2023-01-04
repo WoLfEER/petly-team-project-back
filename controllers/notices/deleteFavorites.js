@@ -1,11 +1,8 @@
-// const { HttpError } = require("../../helpers");
 const { User } = require("../../models/user");
 
 const deleteFavorites = async (req, res) => {
   const { id } = req.user;
   const { id: noticeId } = req.params;
-  // const { favorite } = req.body;
-  //   const result = await Notice.findById(noticeId);
 
   let user = await User.findByIdAndUpdate(id);
   const isAdded = user.favorites.includes(noticeId);
@@ -16,9 +13,16 @@ const deleteFavorites = async (req, res) => {
       { $pull: { favorites: noticeId } },
       { new: true }
     );
-    res.json(user);
+    res.status(200).json({
+      status: "success",
+      code: 200,
+      message: "Your notice deleted",
+      data: {
+        id: noticeId,
+      },
+    });
   }
-  res.status(409).json({ message: "empty favs" });
+  res.status(409).json({ code: 409, message: "empty favorites" });
 };
 
 module.exports = deleteFavorites;
