@@ -44,7 +44,7 @@ const getByCategory = async (req, res, next) => {
     return;
   }
 
-  const result = await Notice.find({ category }, "-createdAt -updatedAt", {
+  const result = await Notice.find({ category }, "-createdAt -updatedsrAt", {
     skip,
     limit,
   }).populate({
