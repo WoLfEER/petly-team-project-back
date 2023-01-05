@@ -1,6 +1,7 @@
 const { User } = require("../../models/user");
+const { HttpError } = require("../../helpers");
 
-const updateFavorites = async (req, res) => {
+const updateFavorites = async (req, res, next) => {
   const { id } = req.user;
   const { id: noticeId } = req.params;
 
@@ -8,9 +9,7 @@ const updateFavorites = async (req, res) => {
   const isAdded = user.favorites.includes(noticeId);
 
   if (isAdded) {
-    res
-      .status(409)
-      .json({ code: 409, status: `Notice ${noticeId} already in favorites` });
+    next(HttpError(409, `Notice ${noticeId} already in favorites`));
     return;
   }
   user = await User.findByIdAndUpdate(

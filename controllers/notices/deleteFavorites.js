@@ -1,5 +1,5 @@
-const { HttpError } = require("../../helpers");
 const { User } = require("../../models/user");
+const { HttpError } = require("../../helpers");
 
 const deleteFavorites = async (req, res, next) => {
   const { id } = req.user;
@@ -9,7 +9,7 @@ const deleteFavorites = async (req, res, next) => {
   const isAdded = user.favorites.includes(noticeId);
 
   if (!isAdded) {
-    next(HttpError(409, { status: 409, message: "empty favorites" }));
+    next(HttpError(409, "empty favorites"));
   }
 
   user = await User.findByIdAndUpdate(
@@ -21,7 +21,7 @@ const deleteFavorites = async (req, res, next) => {
     status: 200,
     message: "Your notice deleted",
     data: {
-      id: noticeId,
+      noticeId,
     },
   });
 };
