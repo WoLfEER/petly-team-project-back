@@ -251,10 +251,22 @@
             "description": "Successful operation"
           },
           "201": {
-            "description": "Successful operation"
+            "description": "Cread user"
           },
-          "403": {
-            "description": "Forbidden"
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/auth/google-redirect": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Authorization on the site using Google OAuth API",
+        "description": "Authorization on the site using Google OAuth API",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           },
           "500": {
             "description": "Server error"
@@ -299,6 +311,92 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/addnotice": {
+      "post": {
+        "tags": ["Notices"],
+        "summary": "Add noticies",
+        "description": "Add noticies",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Create a new noticies",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["category", "title"],
+                "properties": {
+                  "category": {
+                    "type": "String",
+                    "enum": [
+                      "sell",
+                      "lost-found",
+                      "for-free",
+                      "favorite",
+                      "own"
+                    ]
+                  },
+                  "price": {
+                    "type": "Number",
+                    "example": "100"
+                  },
+                  "breed": {
+                    "type": "String",
+                    "example": "dog"
+                  },
+                  "name": {
+                    "type": "String",
+                    "example": "Tom"
+                  },
+                  "location": {
+                    "type": "String",
+                    "example": "Kyiv"
+                  },
+                  "sex": {
+                    "type": "String",
+                    "enum": ["male", "female"]
+                  },
+                  "comments": {
+                    "type": "String",
+                    "example": "good pet"
+                  },
+                  "title": {
+                    "type": "String",
+                    "example": "selling a pet"
+                  },
+                  "birthday": {
+                    "type": "String",
+                    "example": "19-07-2022"
+                  },
+                  "avatarURL": {
+                    "type": "String",
+                    "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNoticies"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Server error"
@@ -532,23 +630,23 @@
               }
             }
           },
-          "token": {
+          "accessToken": {
             "type": "String",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVhODMyYjkzNmU0NGQ2Y2NkNWFhMSIsImlhdCI6MTY3Mjg0OTQ1OCwiZXhwIjoxNjcyODUwMzU4fQ.g68XnnvbrUq_2Z9u90Dn_iXkuHeZO4Rc5mB48JV1lMM"
+          },
+          "refreshToken": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVhODMyYjkzNmU0NGQ2Y2NkNWFhMSIsImlhdCI6MTY3Mjg0OTQ1OCwiZXhwIjoxNjczNDU0MjU4fQ.BC4zFA5DJM89qkOHBgctxGDiCUTysKxOstOFVpN4mZQ"
           }
         }
       },
       "Login": {
         "type": "object",
         "properties": {
-          "token": {
-            "type": "String",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
-          },
           "user": {
             "type": "object",
             "properties": {
-              "id": {
+              "_id": {
                 "type": "String",
                 "example": "63a85bf53ab74349ac3a80eb"
               },
@@ -556,6 +654,90 @@
                 "type": "String",
                 "format": "email",
                 "example": "unknown@gmail.com"
+              },
+              "name": {
+                "type": "String",
+                "example": "John Doe"
+              },
+              "city": {
+                "type": "String",
+                "example": "Kyiv, Obolon"
+              },
+              "phone": {
+                "type": "String",
+                "example": "+380983455545"
+              },
+              "avatarUrl": {
+                "type": "String",
+                "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+              },
+              "myPets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "String",
+                      "example": "63ab17e4cdc8b742046a5b62"
+                    },
+                    "name": {
+                      "type": "String",
+                      "example": "Tom"
+                    },
+                    "birthday": {
+                      "type": "String",
+                      "example": "2022-07-19"
+                    },
+                    "breed": {
+                      "type": "String",
+                      "example": "Dog"
+                    },
+                    "comments": {
+                      "type": "String",
+                      "example": "Good pet"
+                    },
+                    "avatarURL": {
+                      "type": "String",
+                      "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg"
+                    },
+                    "cloudId": {
+                      "type": "String",
+                      "example": "avatars/pqys0k4rpbrlkrliywpw"
+                    },
+                    "__v": {
+                      "type": "Number",
+                      "example": 0
+                    }
+                  }
+                }
+              },
+              "accessToken": {
+                "type": "String",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+              },
+              "refreshToken": {
+                "type": "String",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVhODMyYjkzNmU0NGQ2Y2NkNWFhMSIsImlhdCI6MTY3Mjg1MzY2MSwiZXhwIjoxNjczNDU4NDYxfQ.VOMnM44ewWTGuHjdU_-vwUoP9BCodLchiykGatlJBU0"
+              },
+              "favorites": {
+                "type": "array",
+                "items": {
+                  "example": "63b5b82ffe500173aca6defb"
+                }
+              },
+              "own": {
+                "type": "array",
+                "items": {
+                  "example": "63b5b81bfe500173aca6def7"
+                }
+              },
+              "createdAt": {
+                "type": "String",
+                "example": "2022-12-27T16:05:10.175Z"
+              },
+              "updatedAt": {
+                "type": "String",
+                "example": "2022-12-27T16:05:56.198Z"
               }
             }
           }
@@ -702,10 +884,11 @@
         "properties": {
           "_id": {
             "type": "String",
-            "example": "63ab17b6cdc8b742046a5b5e"
+            "example": "63a85bf53ab74349ac3a80eb"
           },
           "email": {
             "type": "String",
+            "format": "email",
             "example": "unknown@gmail.com"
           },
           "name": {
@@ -720,13 +903,12 @@
             "type": "String",
             "example": "+380983455545"
           },
-          "avatarURL": {
+          "avatarUrl": {
             "type": "String",
             "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
           },
-
           "myPets": {
-            "type": "Array",
+            "type": "array",
             "items": {
               "type": "object",
               "properties": {
@@ -754,16 +936,35 @@
                   "type": "String",
                   "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672061970/avatars/pqys0k4rpbrlkrliywpw.jpg"
                 },
-                "owner": {
-                  "type": "String",
-                  "example": "63ab17b6cdc8b742046a5b5e"
-                },
                 "cloudId": {
                   "type": "String",
                   "example": "avatars/pqys0k4rpbrlkrliywpw"
                 },
-                "__v": { "type": "Number", "example": 0 }
+                "__v": {
+                  "type": "Number",
+                  "example": 0
+                }
               }
+            }
+          },
+          "accessToken": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTMyMjgzZDkwMzE3Mjk5ODAwYzk0YyIsImlhdCI6MTY3MDU4NzAyOCwiZXhwIjoxNjcwNjY5ODI4fQ.ykZK0GV8f72F9AJ7bIqPFtX_3A1ibFgWBei32GH07xw"
+          },
+          "refreshToken": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVhODMyYjkzNmU0NGQ2Y2NkNWFhMSIsImlhdCI6MTY3Mjg1MzY2MSwiZXhwIjoxNjczNDU4NDYxfQ.VOMnM44ewWTGuHjdU_-vwUoP9BCodLchiykGatlJBU0"
+          },
+          "favorites": {
+            "type": "array",
+            "items": {
+              "example": "63b5b82ffe500173aca6defb"
+            }
+          },
+          "own": {
+            "type": "array",
+            "items": {
+              "example": "63b5b81bfe500173aca6def7"
             }
           },
           "createdAt": {
@@ -795,6 +996,10 @@
               "__v": 0
             }
           ],
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2NzE2MiwiZXhwIjoxNjcyODY4MDYyfQ.YavIaSIWMaBTeeaUBoSZi7syF7-HV3gGiCmkxTp_4f0",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2NzE2MiwiZXhwIjoxNjczNDcxOTYyfQ.argwCLrMWM_txjGk5BdJkDd4aVJ3CENjRehU6FIZsfo",
+          "favorites": ["63b5b82ffe500173aca6defb"],
+          "own": ["63b5b81bfe500173aca6def7"],
           "createdAt": "2022-12-27T16:05:10.175Z",
           "updatedAt": "2022-12-27T16:05:56.198Z"
         }
@@ -826,10 +1031,16 @@
             "type": "String",
             "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
           },
-          "token": {
+          "accessToken": {
             "type": "String",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWIxN2I2Y2RjOGI3NDIwNDZhNWI1ZSIsImlhdCI6MTY3MjE1NzExMCwiZXhwIjoxNjcyMjAwMzEwfQ.dioRsjzXYC8nOdmNLLq221mObm2sne-vFNexOtbqoh4"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2ODQ5NSwiZXhwIjoxNjcyODY5Mzk1fQ.Lcj5704WtdxdnLkJJaaOUkvFvIiV0aM2hBubac7hiqI"
           },
+          "refreshToken": {
+            "type": "String",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2ODQ5NSwiZXhwIjoxNjczNDczMjk1fQ.C9VA6jrlBKkUB6tdQnXzeqAgFdVU007yG0gnBk3yuZ4"
+          },
+          "favorites": ["63b5b82ffe500173aca6defb"],
+          "own": ["63b5b81bfe500173aca6def7"],
           "createdAt": {
             "type": "String",
             "example": "2022-12-27T16:05:10.175Z"
@@ -846,7 +1057,10 @@
           "city": "Kyiv, Obolon",
           "phone": "0911111111",
           "avatarUrl": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672159245/avatars/xde0wwarbwnfwe7p12gp.jpg",
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWIxN2I2Y2RjOGI3NDIwNDZhNWI1ZSIsImlhdCI6MTY3MjE1NzExMCwiZXhwIjoxNjcyMjAwMzEwfQ.dioRsjzXYC8nOdmNLLq221mObm2sne-vFNexOtbqoh4",
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2ODQ5NSwiZXhwIjoxNjcyODY5Mzk1fQ.Lcj5704WtdxdnLkJJaaOUkvFvIiV0aM2hBubac7hiqI",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYjVlYzRmOWI3N2MzZmUzMDJmZGNkNiIsImlhdCI6MTY3Mjg2ODQ5NSwiZXhwIjoxNjczNDczMjk1fQ.C9VA6jrlBKkUB6tdQnXzeqAgFdVU007yG0gnBk3yuZ4",
+          "favorites": ["63b5b82ffe500173aca6defb"],
+          "own": ["63b5b81bfe500173aca6def7"],
           "createdAt": "2022-12-27T16:05:10.175Z",
           "updatedAt": "2022-12-27T16:41:16.237Z"
         }
