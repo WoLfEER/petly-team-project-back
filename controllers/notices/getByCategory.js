@@ -6,9 +6,12 @@ const jwt = require("jsonwebtoken");
 
 const getByCategory = async (req, res, next) => {
   const { category } = req.params;
+  const { page = 1, limit = 9 } = req.query;
+  const skip = (page - 1) * limit;
 
   if (category === "favorite" || category === "own") {
-    //TODO midleware
+    // TODO midleware
+
     try {
       const { authorization = "" } = req.headers;
 
@@ -23,13 +26,12 @@ const getByCategory = async (req, res, next) => {
           throw Error("Not authorized");
         }
 
-        // TODO private notices res
         req.user = user;
         const data = await Notice.find({ owner: user._id }).populate({
           path: "owner",
           select: "id phone email",
         });
-        console.log(user.id);
+
         res.status(200).json(data);
 
         next();
@@ -42,7 +44,10 @@ const getByCategory = async (req, res, next) => {
     return;
   }
 
-  const result = await Notice.find({ category }).populate({
+  const result = await Notice.find({ category }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate({
     path: "owner",
     select: "id phone email",
   });

@@ -43,7 +43,7 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
+    favorites: [{ type: Schema.ObjectId, ref: "notice" }],
 
     own: [{ type: Schema.ObjectId, ref: "notices" }],
   },
