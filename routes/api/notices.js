@@ -2,11 +2,10 @@ const express = require("express");
 const {
   getByCategory,
   addNotice,
-  deleteById,
+  deleteOwnNoticeById,
   updateFavorites,
-  getById,
-  getOwn,
-  getFavorite,
+  getOwnNotice,
+  getOwnNoticeFavorites,
   deleteFavorites,
 } = require("../../controllers/notices");
 const { controllerWrapper, isValidId } = require("../../helpers");
@@ -16,9 +15,12 @@ const { schemas } = require("../../models/notice");
 const router = express.Router();
 
 router.get("/:category", controllerWrapper(getByCategory));
-router.get("/own/favorite", authenticate, controllerWrapper(getFavorite));
-router.get("/own/:owner", authenticate, controllerWrapper(getOwn));
-router.get("/own/:id", controllerWrapper(getById));
+router.get(
+  "/user/favorite",
+  authenticate,
+  controllerWrapper(getOwnNoticeFavorites)
+);
+router.get("/user/own", authenticate, controllerWrapper(getOwnNotice));
 
 router.post(
   "/addnotice",
@@ -28,32 +30,25 @@ router.post(
   controllerWrapper(addNotice)
 );
 
-router.post(
-  "/own/:id",
-  authenticate,
-  validateBody(schemas.updateFavoriteSchema),
-  controllerWrapper(updateFavorites)
-);
-
 router.patch(
-  "/own/:id/favorites",
+  "/user/:id/favorites",
   authenticate,
   validateBody(schemas.updateFavoriteSchema),
   controllerWrapper(updateFavorites)
 );
 
 router.delete(
-  "/own/:id/favorites",
+  "/user/:id/favorites",
   authenticate,
   validateBody(schemas.updateFavoriteSchema),
   controllerWrapper(deleteFavorites)
 );
 
 router.delete(
-  "/own/:id",
+  "/user/:id",
   authenticate,
   isValidId,
-  controllerWrapper(deleteById)
+  controllerWrapper(deleteOwnNoticeById)
 );
 
 module.exports = router;

@@ -34,7 +34,8 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    myPets: [{ type: Schema.ObjectId, ref: "userPet" }],
+    myPets: [{ type: Schema.ObjectId, ref: "userPet", default: [] }],
+    favorites: [{ type: Schema.ObjectId, ref: "notice", default: [] }],
     accessToken: {
       type: String,
       default: null,
@@ -43,9 +44,6 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    favorites: [{ type: Schema.ObjectId, ref: "favorites" }],
-
-    own: [{ type: Schema.ObjectId, ref: "notices" }],
   },
   { versionKey: false, timestamps: true }
 );

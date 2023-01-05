@@ -1,6 +1,5 @@
 const { Notice } = require("../../models/notice");
-const { User } = require("../../models/user");
-const { HttpError, uploadImage } = require("../../helpers");
+const { uploadImage } = require("../../helpers");
 const fs = require("fs").promises;
 
 const addNotice = async (req, res) => {
@@ -28,22 +27,8 @@ const addNotice = async (req, res) => {
     owner,
   });
 
-  userNotice = await userNotice.populate({
-    path: "owner",
-    select: "id phone email",
-  });
+  userNotice = await userNotice.populate("owner", "email phone");
 
-  const result = await User.findByIdAndUpdate(
-    { _id: owner },
-    { $push: { own: userNotice } },
-    {
-      new: true,
-    }
-  );
-
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
   res.json(userNotice);
 };
 
