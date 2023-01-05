@@ -1,8 +1,9 @@
-const { Notice } = require("../../models/notice");
+const { User } = require("../../models/user");
 
 const getFavorite = async (req, res) => {
   const { _id: userId } = req.user;
-  const result = await Notice.find({ owner: userId._id });
+  console.log(req.user);
+  const result = await User.find({ favorites: userId._id });
 
   res.status(200).json(result);
 };

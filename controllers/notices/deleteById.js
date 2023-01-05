@@ -7,6 +7,7 @@ const deleteById = async (req, res) => {
   if (!result) {
     throw HttpError(404);
   }
+  console.log(1111111, id, result);
   res.status(200).json({ message: "Notice deleted" });
 };
 
