@@ -1,19 +1,17 @@
 const getByCategory = require("./getByCategory");
 const addNotice = require("./addNotice");
-const deleteById = require("./deleteById");
-const getById = require("./getById");
+const deleteOwnNoticeById = require("./deleteOwnNoticeById");
 const updateFavorites = require("./updateFavorites");
-const getOwn = require("./getOwn");
-const getFavorite = require("./getFavorite");
+const getOwnNotice = require("./getOwnNotice");
+const getOwnNoticeFavorites = require("./getOwnNoticeFavorites");
 const deleteFavorites = require("./deleteFavorites");
 
 module.exports = {
   getByCategory,
   addNotice,
-  deleteById,
-  getById,
+  deleteOwnNoticeById,
   updateFavorites,
-  getOwn,
-  getFavorite,
+  getOwnNotice,
+  getOwnNoticeFavorites,
   deleteFavorites,
 };
