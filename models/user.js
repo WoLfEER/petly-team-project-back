@@ -25,7 +25,6 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      unique: true,
     },
     birthday: {
       type: String,
