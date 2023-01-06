@@ -68,10 +68,15 @@ const registerSchema = Joi.object({
   // .pattern(/^\+380\d{9}$/, "numbers"),
 });
 
+const refreshPassSchema = Joi.object({
+  email: Joi.string().required(),
+});
+
 const schemas = {
   loginSchema,
   registerSchema,
   refreshSchema,
+  refreshPassSchema
 };
 
 const User = model("user", userSchema);
