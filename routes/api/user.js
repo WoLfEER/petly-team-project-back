@@ -26,4 +26,6 @@ router.delete(
   controllerWrapper(ctrl.removeUserPet)
 );
 
+router.get("/currentuser", authenticate, controllerWrapper(ctrl.currentUser));
+
 module.exports = router;
