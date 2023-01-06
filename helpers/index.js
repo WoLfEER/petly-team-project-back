@@ -4,7 +4,7 @@ const HttpError = require("./HttpError");
 const uploadImage = require("./cloudinary");
 const createTokens = require("./createTocens");
 const isValidId = require("./isValidId");
-
+const sendEmail = require("./sendMail");
 
 module.exports = {
   controllerWrapper,
@@ -13,4 +13,5 @@ module.exports = {
   uploadImage,
   createTokens,
   isValidId,
+  sendEmail,
 };
