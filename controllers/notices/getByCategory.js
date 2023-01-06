@@ -11,6 +11,7 @@ const getByCategory = async (req, res, next) => {
   }
 
   const counter = await Notice.find({ category }).count();
+  const totalPage = Math.ceil(counter / limit);
 
   const data = await Notice.find({ category }, "", {
     skip,
@@ -25,7 +26,7 @@ const getByCategory = async (req, res, next) => {
     status: "success",
     data,
     page,
-    TotalPages: counter,
+    totalPage,
   });
 };
 
