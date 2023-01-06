@@ -11,11 +11,17 @@ const getByCategory = async (req, res, next) => {
   }
 
   const counter = await Notice.find({ category }).count();
-  const totalPage = Math.ceil(counter / limit);
+  let totalPage = 1;
+
+  if (counter !== 0) {
+    totalPage =
+      counter % limit !== 0 ? Math.floor(counter / limit) + 1 : counter / limit;
+  }
 
   if (page > totalPage) {
     next(HttpError(400, `Not Found, ${page} is last page`));
   }
+
 
   const data = await Notice.find({ category }, "", {
     skip,
