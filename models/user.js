@@ -63,9 +63,9 @@ const registerSchema = Joi.object({
   password: Joi.string().max(32).required(),
   email: Joi.string().email().required(),
   name: Joi.string().required(),
-  city: Joi.string().required(),
+  city: Joi.string(),
   // .pattern(/^(\w+(,)\s*)+\w+$/),
-  phone: Joi.string().required(),
+  phone: Joi.string(),
   // .pattern(/^\+380\d{9}$/, "numbers"),
 });
 

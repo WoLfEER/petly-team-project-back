@@ -22,7 +22,6 @@ const getByCategory = async (req, res, next) => {
     next(HttpError(400, `Not Found, ${page} is last page`));
   }
 
-
   const data = await Notice.find({ category }, "", {
     skip,
     limit: Number(limit),
