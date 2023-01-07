@@ -1,5 +1,5 @@
-const { User } = require("../../models/user");
 const { HttpError } = require("../../helpers");
+const { User } = require("../../models/user");
 
 const deleteFavorites = async (req, res, next) => {
   const { id } = req.user;

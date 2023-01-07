@@ -79,10 +79,15 @@ const registerSchema = Joi.object({
   phone: Joi.string(),
 });
 
+const refreshPassSchema = Joi.object({
+  email: Joi.string().required(),
+});
+
 const schemas = {
   loginSchema,
   registerSchema,
   refreshSchema,
+  refreshPassSchema
 };
 
 const User = model("user", userSchema);
