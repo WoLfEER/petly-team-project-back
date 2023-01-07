@@ -34,9 +34,11 @@ const googleCallback = async (
     const newUser = await User.create({
       email,
       password,
+      phone: "",
       name: displayName,
       avatarUrl: picture,
     });
+
     done(null, newUser);
   } catch (error) {
     done(error, false);

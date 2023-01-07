@@ -21,6 +21,7 @@ router.get(
   authenticate,
   controllerWrapper(getOwnNoticeFavorites)
 );
+
 router.get("/user/own", authenticate, controllerWrapper(getOwnNotice));
 
 router.post(
