@@ -38,6 +38,7 @@ const getByCategory = async (req, res, next) => {
     data,
     page,
     totalPage,
+    counter,
   });
 };
 
