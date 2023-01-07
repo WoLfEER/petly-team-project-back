@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
-const emailRegexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const emailRegexp = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$/;
 const Joi = require("joi");
 
 const userSchema = new Schema(
@@ -8,7 +8,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: 1,
+      minlength: 7,
     },
     email: {
       type: String,
@@ -25,7 +25,6 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      unique: true,
     },
     birthday: {
       type: String,
@@ -55,18 +54,29 @@ const refreshSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-  password: Joi.string().min(1).max(32).required(),
-  email: Joi.string().required(),
+  password: Joi.string()
+    .min(7)
+    .max(32)
+    .required()
+    .pattern(/^[a-zA-Z0-9а-яА-Я]+$/),
+  email: Joi.string()
+    .required()
+    .pattern(/^[a-zA-Z0-9]+[a-zA-Z0-9_-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$/),
 });
 
 const registerSchema = Joi.object({
-  password: Joi.string().max(32).required(),
-  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(7)
+    .max(32)
+    .required()
+    .pattern(/^[a-zA-Z0-9а-яА-Я]+$/),
+  repeat_password: Joi.ref("password"),
+  email: Joi.string()
+    .required()
+    .pattern(/^[a-zA-Z0-9]+[a-zA-Z0-9_-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$/),
   name: Joi.string().required(),
-  city: Joi.string().required(),
-  // .pattern(/^(\w+(,)\s*)+\w+$/),
-  phone: Joi.string().required(),
-  // .pattern(/^\+380\d{9}$/, "numbers"),
+  city: Joi.string(),
+  phone: Joi.string(),
 });
 
 const schemas = {

@@ -318,7 +318,7 @@
         }
       }
     },
-    "/addnotice": {
+    "/notices/addnotice": {
       "post": {
         "tags": ["Notices"],
         "summary": "Add noticies",
@@ -397,6 +397,170 @@
           },
           "404": {
             "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/notices/:category": {
+      "get": {
+        "tags": ["Notices"],
+        "summary": "Get information by category",
+        "description": "Get information by category",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/notices/user/:id/favorites": {
+      "patch": {
+        "tags": ["Notices"],
+        "summary": "Updating information about the user's favorite notice",
+        "description": "Updating information about the user's favorite notice by token in headers Autorization",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "The token issued to the current user"
+          },
+          {
+            "in": "path",
+            "name": "noticeId",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "Noticies id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Updating the user's favorite notification information has been successfully completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateNoticiesUser"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Notice already in favorites"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/notices/user/:id/favorites/": {
+      "delete": {
+        "tags": ["Notices"],
+        "summary": "Deleting information about a user's favorite notification",
+        "description": "Deleting information about the user's favorite notice by token in headers Autorization",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "The token issued to the current user"
+          },
+          {
+            "in": "path",
+            "name": "noticeId",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "Noticies id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Deleting the user's favorite notification information has been successfully completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteFavoritesNoticiesUser"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Empty favorites"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/notices/user/:id": {
+      "delete": {
+        "tags": ["Notices"],
+        "summary": "Deleting user notification information",
+        "description": "Deleting user notification information by token in headers Autorization",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "The token issued to the current user"
+          },
+          {
+            "in": "path",
+            "name": "noticeId",
+            "schema": {
+              "type": "String"
+            },
+            "required": true,
+            "description": "Noticies id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Deleting the user's notification information has been successfully completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteNoticiesUser"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Empty favorites"
           },
           "500": {
             "description": "Server error"
@@ -878,6 +1042,378 @@
             "date": "2022-07-19"
           }
         ]
+      },
+      "AddNoticies": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "String",
+            "enum": ["sell", "lost-found", "for-free", "favorite", "own"]
+          },
+          "title": {
+            "type": "String",
+            "example": "selling a pet"
+          },
+          "breed": {
+            "type": "String",
+            "example": "dog"
+          },
+          "name": {
+            "type": "String",
+            "example": "Tom"
+          },
+          "location": {
+            "type": "String",
+            "example": "Kyiv"
+          },
+          "sex": {
+            "type": "String",
+            "enum": ["male", "female"]
+          },
+          "price": {
+            "type": "Number",
+            "example": "100"
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "String",
+                "example": "63a85bf53ab74349ac3a80eb"
+              },
+              "email": {
+                "type": "String",
+                "format": "email",
+                "example": "alex@gmail.com"
+              }
+            }
+          },
+          "avatarURL": {
+            "type": "String",
+            "example": "//www.gravatar.com/avatar/6867d7469076bdce33bc75fee20918eb"
+          },
+          "comments": {
+            "type": "String",
+            "example": "good pet"
+          },
+          "birthday": {
+            "type": "String",
+            "example": "19-07-2022"
+          },
+          "cloudId": {
+            "type": "String",
+            "example": "avatars/pqys0k4rpbrlkrliywpw"
+          },
+          "_id": {
+            "type": "String",
+            "example": "63b83cf10d1bdc5e427f2999"
+          }
+        },
+        "example": {
+          "category": "Sell",
+          "title": "Selling a dog",
+          "breed": "Dog",
+          "name": "Tom",
+          "location": "Kyiv",
+          "sex": "male",
+          "price": 100,
+          "owner": {
+            "_id": "63b8a123e29fb9ca523b1d6d",
+            "email": "alex@gmail.com"
+          },
+          "avatarURL": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
+          "comments": "Good pet",
+          "birthday": "00.00.0000",
+          "cloudId": "avatars/pqys0k4rpbrlkrliywpw",
+          "_id": "63b95c3ecb15809010a54f0d",
+          "createdAt": "2023-01-07T11:49:18.273Z",
+          "updatedAt": "2023-01-07T11:49:18.273Z"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "status": {
+            "type": "String",
+            "example": "success"
+          },
+          "data": {
+            "type": "Array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "String",
+                  "example": "63b89f63a2f28a3f4e4f6597"
+                },
+                "category": {
+                  "type": "String",
+                  "example": "sell"
+                },
+                "title": {
+                  "type": "String",
+                  "example": "Selling a dog"
+                },
+                "breed": {
+                  "type": "String",
+                  "example": "dog"
+                },
+                "name": {
+                  "type": "String",
+                  "example": "Tom"
+                },
+                "location": {
+                  "type": "String",
+                  "example": "Kyiv"
+                },
+                "sex": {
+                  "type": "String",
+                  "example": "male"
+                },
+                "price": {
+                  "type": "Number",
+                  "example": 100
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "String",
+                      "example": "63b8a123e29fb9ca523b1d6d"
+                    },
+                    "email": {
+                      "type": "String",
+                      "example": "alex@gmail.com"
+                    }
+                  }
+                },
+                "avatarURL": {
+                  "type": "String",
+                  "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg"
+                },
+                "comments": {
+                  "type": "String",
+                  "example": "good pet"
+                },
+                "birthday": {
+                  "type": "String",
+                  "example": "00.00.0000"
+                },
+                "cloudId": {
+                  "type": "String",
+                  "example": "avatars/pqys0k4rpbrlkrliywpw"
+                },
+                "createdAt": {
+                  "type": "String",
+                  "example": "2023-01-07T11:49:18.273Z"
+                },
+                "updatedAt": {
+                  "type": "String",
+                  "example": "2023-01-07T11:49:18.273Z"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "code": 200,
+          "status": "success",
+          "data": [
+            {
+              "_id": "63b95c3ecb15809010a54f0d",
+              "category": "sell",
+              "title": "Selling a dog",
+              "breed": "dog",
+              "name": "Tom",
+              "location": "Kyiv",
+              "sex": "male",
+              "price": 100,
+              "owner": {
+                "_id": "63b8a123e29fb9ca523b1d6d",
+                "email": "alex@gmail.com"
+              },
+              "avatarURL": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
+              "comments": "good pet",
+              "birthday": "00.00.0000",
+              "cloudId": "avatars/pqys0k4rpbrlkrliywpw",
+              "createdAt": "2023-01-07T11:49:18.273Z",
+              "updatedAt": "2023-01-07T11:49:18.273Z"
+            }
+          ]
+        }
+      },
+      "UpdateNoticiesUser": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "status": {
+            "type": "String",
+            "example": "success"
+          },
+          "message": {
+            "type": "String",
+            "example": "Notice added to favorite"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "noticeId": {
+                "type": "String",
+                "example": "63b89f8aa2f28a3f4e4f65bb"
+              }
+            }
+          }
+        },
+        "example": {
+          "code": 200,
+          "status": "success",
+          "message": "Notice added to favorite",
+          "data": {
+            "noticeId": "63b89f8aa2f28a3f4e4f65bb"
+          }
+        }
+      },
+      "DeleteFavoritesNoticiesUser": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 200
+          },
+          "message": {
+            "type": "String",
+            "example": "Your notice deleted"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "noticeId": {
+                "type": "String",
+                "example": "63b89f8aa2f28a3f4e4f65bb"
+              }
+            }
+          }
+        },
+        "example": {
+          "status": 200,
+          "message": "Your notice deleted",
+          "data": {
+            "noticeId": "63b89f8aa2f28a3f4e4f65bb"
+          }
+        }
+      },
+      "DeleteNoticiesUser": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "status": {
+            "type": "String",
+            "example": "Notice deleted"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "String",
+                "example": "63b98202b4378da9344ec03a"
+              },
+              "category": {
+                "type": "String",
+                "example": "for-free"
+              },
+              "title": {
+                "type": "String",
+                "example": "Giving away a free cat"
+              },
+              "breed": {
+                "type": "String",
+                "example": "Maine Coon"
+              },
+              "name": {
+                "type": "String",
+                "example": "Jerry"
+              },
+              "location": {
+                "type": "String",
+                "example": "Kyiv"
+              },
+              "sex": {
+                "type": "String",
+                "example": "male"
+              },
+              "owner": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "String",
+                    "example": "63b8a123e29fb9ca523b1d6d"
+                  },
+                  "email": {
+                    "type": "String",
+                    "example": "alex@gmail.com"
+                  }
+                }
+              },
+              "avatarURL": {
+                "type": "String",
+                "example": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg"
+              },
+              "comments": {
+                "type": "String",
+                "example": "Good pet"
+              },
+              "birthday": {
+                "type": "String",
+                "example": "00.00.0000"
+              },
+              "cloudId": {
+                "type": "String",
+                "example": "avatars/pqys0k4rpbrlkrliywpw"
+              },
+              "createdAt": {
+                "type": "String",
+                "example": "2023-01-07T14:30:26.426Z"
+              },
+              "updatedAt": {
+                "type": "String",
+                "example": "2023-01-07T14:30:26.426Z"
+              }
+            }
+          }
+        },
+        "example": {
+          "code": 200,
+          "status": "Notice deleted",
+          "data": {
+            "_id": "63b98202b4378da9344ec03a",
+            "category": "for-free",
+            "title": "Giving away a free cat",
+            "breed": "Maine Coon",
+            "name": "Jerry",
+            "location": "Kyiv",
+            "sex": "male",
+            "owner": {
+              "_id": "63b8a123e29fb9ca523b1d6d",
+              "email": "alex3@gmail.com"
+            },
+            "avatarURL": "https://res.cloudinary.com/dhfk2xkow/image/upload/v1672264113/3700_6_10_ckne9o.jpg",
+            "comments": "Good pet",
+            "birthday": "00.00.0000",
+            "cloudId": "avatars/pqys0k4rpbrlkrliywpw",
+            "createdAt": "2023-01-07T14:30:26.426Z",
+            "updatedAt": "2023-01-07T14:30:26.426Z"
+          }
+        }
       },
       "User": {
         "type": "object",
