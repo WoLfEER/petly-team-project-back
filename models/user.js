@@ -87,7 +87,7 @@ const schemas = {
   loginSchema,
   registerSchema,
   refreshSchema,
-  refreshPassSchema
+  refreshPassSchema,
 };
 
 const User = model("user", userSchema);
