@@ -6,7 +6,10 @@ const getOwnNoticeFavorites = async (req, res, next) => {
   const { page = 1, limit = 8 } = req.query;
   const skip = (page - 1) * limit;
 
-  const counter = await User.find({ _id }, { favorites: 1, _id: 0 }).count();
+  // const counter = await User.find({ _id }, { favorites: 1, _id: 0 }).count();
+
+  const counter = (await User.findById(_id)).favorites.length;
+  // const counter = userData.favorites.length;
 
   let totalPage = 1;
 
