@@ -337,7 +337,7 @@
                     "enum": [
                       "sell",
                       "lost-found",
-                      "for-free",
+                      "in-good-hands",
                       "favorite",
                       "own"
                     ]
@@ -1127,7 +1127,7 @@
         "properties": {
           "category": {
             "type": "String",
-            "enum": ["sell", "lost-found", "for-free", "favorite", "own"]
+            "enum": ["sell", "lost-found", "in-good-hands", "favorite", "own"]
           },
           "title": {
             "type": "String",
@@ -1347,7 +1347,7 @@
                 },
                 "category": {
                   "type": "String",
-                  "example": "for-free"
+                  "example": "in-good-hands"
                 },
                 "title": {
                   "type": "String",
@@ -1416,7 +1416,7 @@
           "data": [
             {
               "_id": "63b9903f8fbb9365140c9277",
-              "category": "for-free",
+              "category": "in-good-hands",
               "title": "Giving away a free cat",
               "breed": "Maine Coon",
               "name": "Jerry",
@@ -1543,7 +1543,7 @@
               },
               "category": {
                 "type": "String",
-                "example": "for-free"
+                "example": "in-good-hands"
               },
               "title": {
                 "type": "String",
@@ -1610,7 +1610,7 @@
           "status": "Notice deleted",
           "data": {
             "_id": "63b98202b4378da9344ec03a",
-            "category": "for-free",
+            "category": "in-good-hands",
             "title": "Giving away a free cat",
             "breed": "Maine Coon",
             "name": "Jerry",

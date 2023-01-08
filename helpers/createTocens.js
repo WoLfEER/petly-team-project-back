@@ -9,7 +9,7 @@ const createTokens = async (id) => {
   };
 
   const accessToken = jwt.sign(payload, SECRET_KEY_ACCESS, {
-    expiresIn: "15m",
+    expiresIn: "1d",
   });
   const refreshToken = jwt.sign(payload, SECRET_KEY_REFRESH, {
     expiresIn: "7d",

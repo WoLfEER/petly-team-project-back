@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
-const categories = ["sell", "lost-found", "for-free"];
+const categories = ["sell", "lost-found", "in-good-hands"];
 const birthdayRegexp =
   /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
 const sex = ["male", "female"];
@@ -75,7 +75,7 @@ const Notice = model("notice", noticeSchema);
 noticeSchema.post("save", handleSaveErrors);
 
 const noticesSchema = Joi.object({
-  category: Joi.string().valid("sell", "lost-found", "for-free"),
+  category: Joi.string().valid("sell", "lost-found", "in-good-hands"),
   price: Joi.number().min(1).when("category", {
     is: "sell",
     then: Joi.required(),
