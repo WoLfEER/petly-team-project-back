@@ -13,9 +13,9 @@ const getByCategory = async (req, res, next) => {
   let totalPage = 1;
   let counter = 1;
 
-  const undefinedCheck = Boolean(q);
+  const isUndefined = Boolean(q);
 
-  if (!undefinedCheck) {
+  if (!isUndefined) {
     counter = await Notice.find({ category }).count();
   } else {
     counter = await Notice.find({
@@ -42,7 +42,7 @@ const getByCategory = async (req, res, next) => {
 
   let data = [];
 
-  if (undefinedCheck) {
+  if (isUndefined) {
     data = await Notice.find(
       {
         $and: [
@@ -57,7 +57,7 @@ const getByCategory = async (req, res, next) => {
       },
       "",
       {
-        skip,
+        skip: Number(skip),
         limit: Number(limit),
       }
     ).populate({
@@ -66,7 +66,7 @@ const getByCategory = async (req, res, next) => {
     });
   } else {
     data = await Notice.find({ category }, "", {
-      skip,
+      skip: Number(skip),
       limit: Number(limit),
     }).populate({
       path: "owner",
@@ -78,7 +78,7 @@ const getByCategory = async (req, res, next) => {
     code: 200,
     status: "success",
     data,
-    page,
+    page: Number(page),
     totalPage,
     counter,
   });
