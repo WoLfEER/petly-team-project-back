@@ -45,7 +45,7 @@ const petSchema = Joi.object({
     .min(2)
     .max(16)
     .required(),
-  birthday: Joi.date(),
+  birthday: Joi.date().format("DD.MM.YYYY").utc(),
   breed: Joi.string()
     .regex(/^[a-zA-Z]+$/)
     .min(2)
@@ -55,19 +55,10 @@ const petSchema = Joi.object({
   avatarURL: Joi.string(),
 });
 
-const updateUserSchema = Joi.object({
-  name: Joi.string(),
-  email: Joi.string().email(),
-  birthday: Joi.date().format("DD.MM.YYYY").utc(),
-  phone: Joi.string().pattern(/^\+380\d{9}$/, "numbers"),
-  city: Joi.string().pattern(/[A-Z][a-z]*/),
-});
-
 const UserPet = model("userPet", userPetSchema);
 
 const schemas = {
   petSchema,
-  updateUserSchema,
 };
 
 module.exports = { schemas, UserPet };
