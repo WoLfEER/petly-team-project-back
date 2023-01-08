@@ -13,9 +13,9 @@ const getByCategory = async (req, res, next) => {
   let totalPage = 1;
   let counter = 1;
 
-  const check = Boolean(q);
+  const undefinedCheck = Boolean(q);
 
-  if (!check) {
+  if (!undefinedCheck) {
     counter = await Notice.find({ category }).count();
   } else {
     counter = await Notice.find({
@@ -42,7 +42,7 @@ const getByCategory = async (req, res, next) => {
 
   let data = [];
 
-  if (check) {
+  if (undefinedCheck) {
     data = await Notice.find(
       {
         $and: [

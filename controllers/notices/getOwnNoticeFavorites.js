@@ -22,15 +22,11 @@ const getOwnNoticeFavorites = async (req, res, next) => {
     next(HttpError(400, `Not Found, ${page} is last page`));
   }
 
-  const user = await User.find(
-    { _id },
-    { favorites: 1, _id: 0 },
-    {
-      skip,
-      limit: Number(limit),
-    }
-  ).populate({
+  const user = await User.find({ _id }, { favorites: 1, _id: 0 }).populate({
     path: "favorites",
+    skip,
+    limit: Number(limit),
+
     populate: {
       path: "owner",
       select: "email phone",
