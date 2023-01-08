@@ -3,15 +3,33 @@ const { Notice, categories } = require("../../models/notice");
 
 const getByCategory = async (req, res, next) => {
   const { category } = req.params;
-  const { page = 1, limit = 8 } = req.query;
+  const { page = 1, limit = 8, q } = req.query;
   const skip = (page - 1) * limit;
 
   if (!categories.includes(category)) {
     next(HttpError(400, `Not Found`));
   }
 
-  const counter = await Notice.find({ category }).count();
   let totalPage = 1;
+  let counter = 1;
+
+  const check = Boolean(q);
+
+  if (!check) {
+    counter = await Notice.find({ category }).count();
+  } else {
+    counter = await Notice.find({
+      $and: [
+        { category },
+        {
+          $or: [
+            { title: { $regex: `${q}`, $options: "i" } },
+            { location: { $regex: `${q}`, $options: "i" } },
+          ],
+        },
+      ],
+    }).count();
+  }
 
   if (counter !== 0) {
     totalPage =
@@ -22,18 +40,43 @@ const getByCategory = async (req, res, next) => {
     next(HttpError(400, `Not Found, ${page} is last page`));
   }
 
-  const data = await Notice.find({ category }, "", {
-    skip,
-    limit: Number(limit),
-  }).populate({
-    path: "owner",
-    select: "id phone email",
-  });
+  let data = [];
+
+  if (check) {
+    data = await Notice.find(
+      {
+        $and: [
+          { category },
+          {
+            $or: [
+              { title: { $regex: `${q}`, $options: "i" } },
+              { location: { $regex: `${q}`, $options: "i" } },
+            ],
+          },
+        ],
+      },
+      "",
+      {
+        skip,
+        limit: Number(limit),
+      }
+    ).populate({
+      path: "owner",
+      select: "id phone email",
+    });
+  } else {
+    data = await Notice.find({ category }, "", {
+      skip,
+      limit: Number(limit),
+    }).populate({
+      path: "owner",
+      select: "id phone email",
+    });
+  }
 
   res.json({
     code: 200,
     status: "success",
-
     data,
     page,
     totalPage,
