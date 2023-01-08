@@ -23,12 +23,15 @@ const userSchema = new Schema(
     },
     city: {
       type: String,
+      default: "",
     },
     phone: {
       type: String,
+      default: "",
     },
     birthday: {
       type: String,
+      default: "",
     },
     avatarUrl: {
       type: String,
