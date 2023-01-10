@@ -17,8 +17,12 @@ const login = async (req, res) => {
   const { accessToken, refreshToken } = await createTokens(user._id);
 
   await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
-  user = await User.findById(user._id, { password: 0 }).populate("myPets", {
-    owner: 0,
+  user = await User.findById(user._id, {
+    accessToken: 1,
+    refreshToken: 1,
+    email: 1,
+    phone: 1,
+    _id: 1,
   });
 
   res.json({
