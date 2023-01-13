@@ -4,8 +4,12 @@ const ctrl = require("../../controllers/user");
 const { validateBody, authenticate, upload } = require("../../middlewares");
 const { controllerWrapper } = require("../../helpers");
 const { schemas } = require("../../models/userPet");
+const {
+  schemas: { updateUserSchema },
+} = require("../../models/user");
 
 router.get("/userinfo", authenticate, controllerWrapper(ctrl.getUserPets));
+
 router.post(
   "/pets",
   authenticate,
@@ -13,13 +17,15 @@ router.post(
   validateBody(schemas.petSchema),
   controllerWrapper(ctrl.addUserPet)
 );
+
 router.patch(
   "/update",
   authenticate,
   upload.single("avatar"),
-  validateBody(schemas.updateUserSchema),
+  validateBody(updateUserSchema),
   controllerWrapper(ctrl.updateUser)
 );
+
 router.delete(
   "/pets/:petId",
   authenticate,
