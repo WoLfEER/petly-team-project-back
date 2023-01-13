@@ -4,6 +4,9 @@ const ctrl = require("../../controllers/user");
 const { validateBody, authenticate, upload } = require("../../middlewares");
 const { controllerWrapper } = require("../../helpers");
 const { schemas } = require("../../models/userPet");
+const {
+  schemas: { updateUserSchema },
+} = require("../../models/user");
 
 router.get("/userinfo", authenticate, controllerWrapper(ctrl.getUserPets));
 router.post(
@@ -17,7 +20,7 @@ router.patch(
   "/update",
   authenticate,
   upload.single("avatar"),
-  validateBody(schemas.updateUserSchema),
+  validateBody(updateUserSchema),
   controllerWrapper(ctrl.updateUser)
 );
 router.delete(

@@ -1,6 +1,5 @@
 const uploadImage = require("../../helpers/cloudinary");
 
-
 const { User } = require("../../models/user");
 
 const { HttpError } = require("../../helpers");
@@ -42,6 +41,9 @@ const updateUser = async (req, res) => {
       select: {
         password: false,
         myPets: false,
+        favorites: false,
+        accessToken: false,
+        refreshToken: false,
       },
     }
   );

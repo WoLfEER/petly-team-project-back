@@ -1,8 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { handleSaveErrors } = require("../helpers");
+const Joi = require("joi").extend(require("@joi/date"));
 const emailRegexp = /^[a-zA-Z0-9]+[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$/;
-
-const Joi = require("joi");
 
 const userSchema = new Schema(
   {
@@ -53,6 +52,14 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleSaveErrors);
 
+const updateUserSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string().email(),
+  birthday: Joi.date().format("DD.MM.YYYY").utc(),
+  phone: Joi.string().pattern(/^\+380\d{9}$/, "numbers"),
+  city: Joi.string().pattern(/[A-Z][a-z]*/),
+});
+
 const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
@@ -88,6 +95,7 @@ const refreshPassSchema = Joi.object({
 });
 
 const schemas = {
+  updateUserSchema,
   loginSchema,
   registerSchema,
   refreshSchema,
